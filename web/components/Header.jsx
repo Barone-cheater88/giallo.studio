@@ -591,7 +591,7 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
       }
     },
     'Comic Sans': {
-      family: '"ComicSansMS", "Comic Sans MS", "Marker Felt", "Chalkboard SE", "Comic Neue", cursive, sans-serif',
+      family: '"Comic Sans MS", cursive',
       style: 'normal',
       classes: {
         heading: {

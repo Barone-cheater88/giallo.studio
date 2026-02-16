@@ -27,8 +27,6 @@ export async function generateMetadata() {
   const ogImage = settings?.seo?.ogImage?.asset?.url
   const keywords = settings?.seo?.keywords
 
-  const faviconUrl = settings?.favicon?.asset?.url
-
   return {
     title: {
       default: siteTitle,
@@ -40,11 +38,6 @@ export async function generateMetadata() {
     creator: 'giallo.studio',
     publisher: 'giallo.studio',
     metadataBase: new URL(siteUrl),
-    icons: {
-      icon: faviconUrl || '/favicon.ico',
-      shortcut: faviconUrl || '/favicon.ico',
-      apple: faviconUrl || '/favicon.ico',
-    },
     alternates: {
       canonical: siteUrl,
     },
@@ -86,7 +79,6 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   const settings = await sanityClient.fetch(siteSettingsQuery)
-  const faviconUrl = settings?.favicon?.asset?.url
 
   // Carica l'SVG del logo lato server se disponibile
   let logoSvgContent = null
@@ -183,30 +175,9 @@ export default async function RootLayout({ children }) {
   }).filter(Boolean).join('\n')
 
 
-  const faviconUrl = settings?.favicon?.asset?.url
-
   return (
     <html lang="it">
       <head>
-        {/* Favicon da Sanity */}
-        {faviconUrl && (() => {
-          // Determina il tipo MIME basato sull'estensione
-          const getIconType = (url) => {
-            if (url.includes('.svg')) return 'image/svg+xml'
-            if (url.includes('.png')) return 'image/png'
-            if (url.includes('.jpg') || url.includes('.jpeg')) return 'image/jpeg'
-            if (url.includes('.gif')) return 'image/gif'
-            return 'image/x-icon'
-          }
-          const iconType = getIconType(faviconUrl)
-          return (
-            <>
-              <link rel="icon" type={iconType} href={faviconUrl} />
-              <link rel="shortcut icon" type={iconType} href={faviconUrl} />
-              <link rel="apple-touch-icon" href={faviconUrl} />
-            </>
-          )
-        })()}
         {customFontStyles && (
           <style dangerouslySetInnerHTML={{ __html: customFontStyles }} />
         )}
