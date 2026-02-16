@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { sanityClient } from '@/sanity'
-import { projectBySlugQuery, projectsQuery } from '@/lib/sanity.queries'
+import { projectBySlugQuery, projectsQuery, siteSettingsQuery } from '@/lib/sanity.queries'
 import { notFound } from 'next/navigation'
 import styles from './project.module.css'
 import TypewriterText from './TypewriterText'
@@ -15,6 +15,52 @@ export async function generateStaticParams() {
     .map((project) => project?.slug?.current)
     .filter(Boolean)
     .map((slug) => ({ slug }))
+}
+
+export async function generateMetadata({ params }) {
+  const resolvedParams = await Promise.resolve(params)
+  const slug = resolvedParams?.slug
+  if (!slug) return {}
+
+  const [project, settings] = await Promise.all([
+    sanityClient.fetch(projectBySlugQuery(slug)),
+    sanityClient.fetch(siteSettingsQuery)
+  ])
+
+  if (!project) return {}
+
+  const title = project?.seo?.metaTitle || project?.title || 'Project'
+  const description = project?.seo?.metaDescription || project?.description || settings?.seo?.metaDescription
+  const keywords = project?.seo?.keywords
+  const ogImageUrl = project?.seo?.ogImage?.asset?.url || project?.coverImage?.asset?.url || settings?.seo?.ogImage?.asset?.url
+  const canonical = project?.seo?.canonicalUrl || (settings?.siteUrl ? `${settings.siteUrl.replace(/\/$/, '')}/projects/${slug}` : undefined)
+
+  return {
+    title,
+    description,
+    keywords: keywords,
+    alternates: canonical ? { canonical } : undefined,
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'article',
+      images: ogImageUrl ? [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : [],
+    },
+  }
 }
 
 export default async function ProjectPage({ params }) {
