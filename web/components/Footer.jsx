@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from './Footer.module.css'
+import { normalizeUrl } from '@/lib/utils'
 
 export default function Footer({ contactInfo, legal, logoSvg, logoSvgContent, social }) {
   const currentYear = new Date().getFullYear()
@@ -157,7 +158,7 @@ export default function Footer({ contactInfo, legal, logoSvg, logoSvgContent, so
               {currentYear} © giallo.studio
               <br />
               {legal?.cookiePolicy ? (
-                <Link href={legal.cookiePolicy} className={styles.link}>
+                <Link href={normalizeUrl(legal.cookiePolicy)} className={styles.link}>
                   Cookies
                 </Link>
               ) : (
@@ -166,7 +167,7 @@ export default function Footer({ contactInfo, legal, logoSvg, logoSvgContent, so
               {legal?.privacyPolicy && (
                 <>
                   {' – '}
-                  <Link href={legal.privacyPolicy} className={styles.link}>
+                  <Link href={normalizeUrl(legal.privacyPolicy)} className={styles.link}>
                     Privacy Policy
                   </Link>
                 </>
@@ -198,13 +199,13 @@ export default function Footer({ contactInfo, legal, logoSvg, logoSvgContent, so
             {currentYear} © giallo.studio
             {' / '}
             {legal?.cookiePolicy ? (
-              <Link href={legal.cookiePolicy} className={styles.link}>Cookies</Link>
+              <Link href={normalizeUrl(legal.cookiePolicy)} className={styles.link}>Cookies</Link>
             ) : (
               <span>Cookies</span>
             )}
             {' – '}
             {legal?.privacyPolicy ? (
-              <Link href={legal.privacyPolicy} className={styles.link}>Privacy Policy</Link>
+              <Link href={normalizeUrl(legal.privacyPolicy)} className={styles.link}>Privacy Policy</Link>
             ) : (
               <span>Privacy Policy</span>
             )}

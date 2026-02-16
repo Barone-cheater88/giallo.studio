@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './page.module.css'
+import { normalizeUrl } from '@/lib/utils'
 
 export default function ClientsGrid({ clients }) {
   const [columnCount, setColumnCount] = useState(4)
@@ -40,7 +41,7 @@ export default function ClientsGrid({ clients }) {
               >
                 {client.url ? (
                   <a
-                    href={client.url}
+                    href={normalizeUrl(client.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

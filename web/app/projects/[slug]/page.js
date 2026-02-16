@@ -6,6 +6,7 @@ import styles from './project.module.css'
 import TypewriterText from './TypewriterText'
 import ProjectNavigationWrapper from './ProjectNavigationWrapper'
 import RevealOnScroll from './RevealOnScroll'
+import { normalizeUrl } from '@/lib/utils'
 
 export async function generateStaticParams() {
   const projects = await sanityClient.fetch(projectsQuery)
@@ -140,7 +141,7 @@ export default async function ProjectPage({ params }) {
                 <div className={styles.infoCellContent}>
                   <span className={styles.infoLabel}>{field.label}:</span>{' '}
                   <a
-                    href={field.url}
+                    href={normalizeUrl(field.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.siteLink}
@@ -178,7 +179,7 @@ export default async function ProjectPage({ params }) {
                     {field.pressItems.map((item, idx) => (
                       <span key={idx} className={styles.infoSubItem}>
                         <a
-                          href={item.url}
+                          href={normalizeUrl(item.url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.pressLink}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://giallo.studio/sitemap.xml
+
+# Disallow admin/private routes if any
+Disallow: /api/
