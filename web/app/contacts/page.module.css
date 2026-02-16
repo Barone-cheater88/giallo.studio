@@ -1,0 +1,94 @@
+.contactsContent {
+  margin-top: 4rem;
+}
+
+@media (max-width: 890px) {
+  .contactsContent {
+    margin-top: 2rem;
+  }
+}
+
+.contactsSection {
+  margin-top: 4rem;
+  margin-bottom: 40vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+@media (max-width: 890px) {
+  .contactsSection {
+    margin-top: 2rem;
+  }
+}
+
+.contactsSubheading {
+  font-family: var(--font-subtitle) !important;
+  font-weight: var(--font-subtitle-weight) !important;
+  font-style: var(--font-subtitle-style) !important;
+  text-transform: var(--font-subtitle-transform) !important;
+  font-size: var(--font-subtitle-size-desktop) !important;
+  line-height: var(--font-subtitle-line-height) !important;
+  color: inherit;
+  margin-bottom: 1em;
+}
+
+
+@media (max-width: 890px) {
+  .contactsSubheading {
+    font-size: var(--font-subtitle-size-mobile, var(--font-subtitle-size-desktop)) !important;
+  }
+}
+
+.contactItem {
+  font-family: var(--font-subtitle) !important;
+  font-weight: var(--font-subtitle-weight) !important;
+  font-style: var(--font-subtitle-style) !important;
+  text-transform: var(--font-subtitle-transform) !important;
+  font-size: var(--font-subtitle-size-desktop) !important;
+  line-height: var(--font-subtitle-line-height) !important;
+  color: inherit;
+  margin-bottom: 0;
+  white-space: pre-line;
+}
+
+.contactItem a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contactsFooter {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: 50px;
+}
+
+@media (max-width: 890px) {
+  .contactsSection {
+    grid-template-columns: 1fr;
+    margin-top: 2rem;
+  }
+  
+  .contactItem {
+    font-family: var(--font-body) !important;
+    font-weight: var(--font-body-weight) !important;
+    font-style: var(--font-body-style) !important;
+    text-transform: var(--font-body-transform) !important;
+    font-size: var(--font-body-size-mobile, var(--font-body-size-desktop)) !important;
+    line-height: var(--font-body-line-height) !important;
+  }
+  
+  .contactsFooter {
+    margin-left: 4.8px;
+    margin-right: 4.8px;
+    width: calc(100vw - 9.6px);
+    left: auto;
+    right: auto;
+    margin-left: calc(-50vw + 50% + 4.8px);
+    margin-right: calc(-50vw + 50% + 4.8px);
+  }
+}

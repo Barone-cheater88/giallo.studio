@@ -1,0 +1,209 @@
+.homePage {
+  margin-top: 0;
+  padding: 0;
+  color: inherit;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  /* overflow: hidden rimosso per permettere position: sticky */
+}
+
+@media (max-width: 890px) {
+  .homePage {
+    padding: 0.3rem;
+  }
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 !important;
+  column-gap: 0 !important;
+  row-gap: 0 !important;
+  width: 100%;
+  padding: 0 !important;
+  position: relative;
+  z-index: 1;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+@media (max-width: 890px) {
+  .projectsGrid {
+    width: calc(100% - 0.6rem);
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+  }
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+  position: relative;
+  will-change: transform;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: right;
+  position: relative;
+  will-change: transform;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+
+.projectLink {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  width: fit-content;
+  transition: text-decoration 0.2s ease;
+}
+
+.projectLink:hover .projectName {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.projectWrapper {
+  display: inline-block;
+  width: fit-content;
+}
+
+.projectItem {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: baseline;
+}
+
+.leftColumn .projectItem {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.rightColumn .projectItem {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.rightColumn .projectTitleWrapper {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.rightColumn .projectTitleRow {
+  justify-content: flex-end;
+}
+
+.rightColumn .projectName {
+  text-align: right;
+}
+
+.rightColumn .projectCategories {
+  text-align: right;
+}
+
+.rightColumn .projectLink,
+.rightColumn .projectWrapper {
+  margin-left: auto;
+  text-align: right;
+}
+
+.rightColumn .projectYear {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+.projectOrder {
+  font-family: var(--font-subtitle, 'inherit');
+  font-weight: var(--font-subtitle-weight, 400);
+  font-style: var(--font-subtitle-style, 'normal');
+  text-transform: var(--font-subtitle-transform, 'normal');
+  font-size: var(--font-subtitle-size-desktop, '32px');
+  line-height: var(--font-subtitle-line-height, '1');
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.projectTitleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.projectTitleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0;
+}
+
+.projectName {
+  font-family: var(--font-subtitle, 'inherit');
+  font-weight: var(--font-subtitle-weight, 400);
+  font-style: var(--font-subtitle-style, 'normal');
+  text-transform: var(--font-subtitle-transform, 'normal');
+  font-size: var(--font-subtitle-size-desktop, '32px');
+  line-height: var(--font-subtitle-line-height, '1');
+}
+
+.projectCategories {
+  font-family: var(--font-body, 'inherit');
+  font-weight: var(--font-body-weight, 400);
+  font-style: var(--font-body-style, 'normal');
+  text-transform: var(--font-body-transform, 'normal');
+  font-size: var(--font-body-size-desktop, '18px');
+  line-height: var(--font-body-line-height, '1.1');
+}
+
+.projectYear {
+  font-family: var(--font-body, 'inherit');
+  font-weight: var(--font-body-weight, 400);
+  font-style: var(--font-body-style, 'normal');
+  text-transform: var(--font-body-transform, 'normal');
+  font-size: var(--font-body-size-desktop, '18px');
+  line-height: 1;
+  margin-left: 8px;
+  display: inline-block;
+  padding: 1px 8px;
+  border: 1px solid currentColor;
+  border-radius: 50px;
+  outline: none;
+  position: relative;
+  top: -10px !important;
+  vertical-align: baseline;
+}
+
+
+/* Responsive */
+@media (max-width: 890px) {
+  .homePage {
+    margin-top: 50px;
+    padding: 0 15px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr !important;
+    gap: 30px;
+  }
+
+  .projectOrder,
+  .projectName {
+    font-size: var(--font-subtitle-size-mobile, '28px');
+  }
+
+  .projectYear {
+    font-size: var(--font-body-size-mobile, '16px');
+  }
+}

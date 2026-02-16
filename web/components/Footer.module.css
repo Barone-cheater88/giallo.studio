@@ -1,0 +1,268 @@
+.footer {
+  width: 100%;
+  padding: 0 20px 0.75rem 20px;
+  margin-top: 50px;
+  border-top: none;
+}
+
+@media (max-width: 890px) {
+  .footer {
+    padding: 0.3rem;
+  }
+}
+
+
+.scrollToTop {
+  display: block;
+  margin: 4rem auto 0.5rem auto;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-subtitle);
+  font-weight: var(--font-subtitle-weight);
+  font-style: var(--font-subtitle-style);
+  text-transform: var(--font-subtitle-transform);
+  font-size: var(--font-subtitle-size-desktop);
+  line-height: var(--font-subtitle-line-height);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  width: 100%;
+  max-width: 2300px;
+  padding: 0 20px;
+}
+
+.footerContent {
+  max-width: 2300px;
+  margin: 0 auto;
+  border-top: 1px solid currentColor;
+  padding-top: 0.75rem;
+}
+
+.footerColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  line-height: var(--font-body-line-height, 1.5);
+  margin: 0;
+  padding: 0;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footerColumn:first-child {
+  text-align: left;
+}
+
+.footerColumn:nth-child(2) {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerColumn:last-child {
+  text-align: right;
+}
+
+/* Layout Mobile: tre righe */
+.footerRows {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  line-height: var(--font-body-line-height, 1.5);
+  margin: 0;
+  padding: 0;
+}
+
+.footerRow {
+  display: block;
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+  text-align: left;
+  padding-top: 10px;
+}
+
+@media (max-width: 890px) {
+  .footerColumns {
+    display: none;
+  }
+
+  .footerRows {
+    display: flex;
+  }
+
+  .footer {
+    margin-left: 4.8px;
+    margin-right: 4.8px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    width: calc(100% - 9.6px);
+    max-width: calc(100% - 9.6px);
+    box-sizing: border-box;
+  }
+  
+  .footerRow {
+    font-size: var(--font-body-size-mobile) !important;
+  }
+  
+  /* Assicura che tutti i link nel footer mobile usino la dimensione mobile */
+  .footerRows a,
+  .footerRows .link {
+    font-size: var(--font-body-size-mobile) !important;
+  }
+  
+  .footerRows .footerRow span,
+  .footerRows .footerItem span {
+    font-size: var(--font-body-size-mobile) !important;
+  }
+  
+  .footerContent {
+    padding-top: 5px;
+  }
+}
+
+/* FooterItem nel desktop */
+.footerColumns .footerItem {
+  margin: 0;
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-desktop) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+/* FooterItem nel mobile */
+.footerRows .footerItem {
+  margin: 0;
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+/* Link nel footer desktop */
+.footerColumns .link {
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-desktop) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+/* Link nel footer mobile */
+.footerRows .link {
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+.footerColumns .link:hover,
+.footerRows .link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Span nel footer desktop */
+.footerColumns .footerItem span {
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-desktop) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+/* Span nel footer mobile */
+.footerRows .footerRow span,
+.footerRows .footerItem span {
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+.separator {
+  margin: 0;
+}
+
+.logoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: inherit !important;
+}
+
+.logoContainer svg {
+  width: auto;
+  height: auto;
+  max-width: 80px;
+  max-height: 80px;
+  display: block;
+  color: inherit !important;
+}
+
+.logoContainer svg * {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  color: inherit !important;
+}
+
+.logoContainer svg *[fill="none"] {
+  fill: none !important;
+}
+
+.logoContainer svg *[stroke="none"] {
+  stroke: none !important;
+}
+
+.footerLogoContainer {
+  color: inherit !important;
+}
+
+.footerLogoContainer svg {
+  color: inherit !important;
+}
+
+.copyright {
+  margin: 0;
+  text-align: center;
+  font-size: inherit;
+}
+

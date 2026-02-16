@@ -1,0 +1,17 @@
+[build]
+  # Base directory: Netlify cambierà directory qui prima di eseguire i comandi
+  base = "web"
+  # Comando di build: installa dipendenze e builda Next.js
+  command = "npm install && npm run build"
+  # Publish directory: gestito automaticamente dal plugin Next.js
+  publish = ".next"
+
+# Plugin ufficiale Netlify per Next.js
+# Gestisce automaticamente routing, ISR, API routes, ecc.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Variabili d'ambiente (opzionale - meglio configurarle nel pannello Netlify)
+# [build.environment]
+#   NODE_VERSION = "18"
+#   NEXT_PUBLIC_SANITY_PROJECT_ID = "a5gx9icj"

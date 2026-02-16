@@ -1,0 +1,601 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--dynamic-background, var(--color-background, #ffffff));
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 0 1px var(--dynamic-background, var(--color-background, #ffffff));
+}
+
+@media (max-width: 890px) {
+  .header {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.currentTime {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-family: var(--font-body, 'inherit');
+  font-weight: var(--font-body-weight, 400);
+  font-style: var(--font-body-style, 'normal');
+  text-transform: var(--font-body-transform, 'normal');
+  font-size: var(--font-body-size-desktop, '18px');
+  line-height: var(--font-body-line-height, '1.1');
+  color: inherit;
+  z-index: 1001;
+}
+
+.funHere {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-family: var(--font-body, 'inherit');
+  font-weight: var(--font-body-weight, 400);
+  font-style: var(--font-body-style, 'normal');
+  text-transform: var(--font-body-transform, 'normal');
+  font-size: var(--font-body-size-desktop, '18px');
+  line-height: var(--font-body-line-height, '1.1');
+  color: inherit;
+  z-index: 1001;
+}
+
+@media (max-width: 890px) {
+  .funHere {
+    display: none;
+  }
+}
+
+
+/* Layout mobile: tre colonne */
+.mobileHeader {
+  display: none;
+}
+
+.mobileLogoColumn {
+  flex: 0 0 20%;
+  display: flex;
+  align-items: center;
+  padding: 0.3rem;
+  justify-content: flex-start;
+  min-width: 0; /* Permette al contenuto di ridursi */
+}
+
+.mobileMenuColumn {
+  flex: 0 0 80%;
+  display: flex;
+  align-items: center;
+  padding: 0.3rem;
+  justify-content: flex-end;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+/* Quando il font Dotty è attivo, rimuovi padding-bottom */
+body.font-dotty .mobileMenuColumn,
+.font-dotty .mobileMenuColumn,
+html.font-dotty .mobileMenuColumn {
+  padding-bottom: 0px !important;
+}
+
+.mobileSeparator {
+  margin: 0 0.25rem;
+  font-family: var(--font-heading) !important;
+  font-weight: var(--font-heading-weight) !important;
+  font-style: var(--font-heading-style) !important;
+  text-transform: var(--font-heading-transform, normal) !important;
+  font-size: var(--font-heading-size-mobile, var(--font-heading-size-desktop, '32px')) !important;
+  line-height: var(--font-heading-line-height) !important;
+}
+
+.menuText {
+  font-family: var(--font-heading) !important;
+  font-weight: var(--font-heading-weight) !important;
+  font-style: var(--font-heading-style) !important;
+  text-transform: var(--font-heading-transform, normal) !important;
+  font-size: var(--font-heading-size-mobile, var(--font-heading-size-desktop, '32px')) !important;
+  line-height: var(--font-heading-line-height) !important;
+  color: inherit;
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+}
+
+/* Quando Munchberg è attivo, FORZA capitalize invece di uppercase - sovrascrive tutto */
+body.font-munchberg .menuText,
+body.font-munchberg .menuButton .menuText,
+body.font-munchberg .mobileMenuColumn .menuText,
+body.font-munchberg .mobileHeader .menuText,
+.font-munchberg .menuText,
+.font-munchberg .menuButton .menuText,
+.font-munchberg .mobileMenuColumn .menuText,
+.font-munchberg .mobileHeader .menuText,
+html.font-munchberg .menuText,
+html.font-munchberg .menuButton .menuText,
+html.font-munchberg .mobileMenuColumn .menuText,
+html.font-munchberg .mobileHeader .menuText {
+  text-transform: capitalize !important;
+}
+
+/* Layout desktop: menu completo */
+.desktopHeader {
+  display: block;
+}
+
+/* Layout mobile: tre colonne - visibile solo su schermi piccoli */
+@media (max-width: 890px) {
+  .mobileHeader {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    min-height: auto;
+    padding: 0.3rem;
+  }
+
+  .header {
+    padding: 0;
+  }
+
+  .desktopHeader {
+    display: none !important;
+  }
+}
+
+/* Assicura che il layout desktop sia sempre visibile su schermi grandi */
+@media (min-width: 891px) {
+  .mobileHeader {
+    display: none !important;
+  }
+
+  .desktopHeader {
+    display: block !important;
+  }
+
+}
+
+.headerContent {
+  max-width: 2300px;
+  margin: 0 auto;
+  padding: 0.5rem 20px;
+  text-align: center;
+  position: relative;
+}
+
+.headerSpacer {
+  height: calc(0.5rem * 2 + var(--font-heading-line-height, 1.2) * var(--font-heading-size-desktop, 16px));
+  background-color: var(--dynamic-background, var(--color-background, #ffffff)) !important;
+  position: relative;
+  z-index: 999;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+@media (max-width: 890px) {
+  .headerSpacer {
+    height: calc(0.25rem * 2 + 24px);
+  }
+}
+
+.subtitleSection {
+  max-width: 2300px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+  background-color: var(--dynamic-background, var(--color-background, #ffffff)) !important;
+  position: relative;
+  z-index: 999;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 890px) {
+  .subtitleSection {
+    padding: 0.3rem !important;
+    padding-right: 0.3rem !important;
+    text-align: left;
+    margin-left: 4.8px;
+    margin-right: 4.8px;
+    margin-top: 5px !important;
+    box-sizing: border-box;
+  }
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-style: var(--font-heading-style);
+  text-transform: var(--font-heading-transform, normal);
+  font-size: var(--font-heading-size-desktop);
+  line-height: var(--font-heading-line-height);
+}
+
+/* Quando Munchberg è attivo, usa capitalize invece di uppercase per la nav */
+body.font-munchberg .nav,
+.font-munchberg .nav,
+html.font-munchberg .nav {
+  text-transform: capitalize !important;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+}
+
+/* Quando Munchberg è attivo, usa capitalize invece di uppercase per i link del menu */
+body.font-munchberg .link,
+.font-munchberg .link,
+html.font-munchberg .link {
+  text-transform: capitalize !important;
+}
+
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: underline;
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px;
+}
+
+/* Fix specifico per Safari: button con classe .link (COLOR e FONT) */
+button.link,
+button.link:hover,
+button.link:focus,
+button.link:active {
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-decoration-width: 1px !important;
+  -webkit-text-decoration-width: 1px !important;
+}
+
+/* Forza Safari a usare 1px anche quando applica underline di default */
+@supports (-webkit-appearance: none) {
+  button.link,
+  button.link:hover,
+  button.link:focus,
+  button.link:active {
+    -webkit-text-decoration-thickness: 1px !important;
+    text-decoration-thickness: 1px !important;
+  }
+}
+
+.link.active {
+  text-decoration: none;
+}
+
+.separator {
+  margin: 0 0.25rem;
+}
+
+.claim {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  padding-right: 8px;
+  white-space: pre-line;
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-desktop);
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, normal);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.claim * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 890px) {
+  .nav {
+    font-size: var(--font-heading-size-mobile, var(--font-heading-size-desktop));
+  }
+  
+  .headerContent {
+    /* Header content mobile styles se necessario */
+  }
+  
+  .claim {
+    font-size: var(--font-body-size-mobile, '18px');
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+}
+
+.logoLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: auto;
+  height: 100%;
+  color: inherit;
+}
+
+.logo {
+  width: auto !important;
+  height: 28px !important;
+  max-width: none !important;
+  max-height: 28px !important;
+  object-fit: contain !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: inherit !important;
+}
+
+.logoContainer svg {
+  width: auto !important;
+  height: auto !important;
+  max-width: 60px !important;
+  max-height: 30px !important;
+  display: block !important;
+  color: inherit !important;
+}
+
+.logoContainer svg * {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  color: inherit !important;
+}
+
+.logoContainer svg *[fill="none"] {
+  fill: none !important;
+}
+
+.logoContainer svg *[stroke="none"] {
+  stroke: none !important;
+}
+
+.logoContainer img {
+  max-width: 60px !important;
+  max-height: 30px !important;
+  height: auto !important;
+  width: auto !important;
+  display: block !important;
+}
+
+.headerLogoContainer {
+  color: inherit !important;
+}
+
+.headerLogoContainer svg {
+  color: inherit !important;
+}
+
+@media (max-width: 890px) {
+  .mobileLogoColumn {
+    justify-content: flex-start;
+  }
+
+  .mobileLogoColumn .logoLink {
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .mobileLogoColumn .logoContainer {
+    justify-content: flex-start;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .mobileLogoColumn .logoContainer {
+    display: block !important;
+  }
+
+  .mobileLogoColumn .logoContainer svg {
+    max-height: 18px !important;
+    height: 18px !important;
+    width: auto !important;
+    max-width: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .mobileLogoColumn .logoContainer img {
+    max-height: 18px !important;
+    height: 18px !important;
+    width: auto !important;
+    max-width: auto !important;
+    display: block !important;
+  }
+
+  .headerLogoContainer {
+    display: block !important;
+  }
+
+  .headerLogoContainer svg {
+    max-height: 18px !important;
+    height: 18px !important;
+    width: auto !important;
+    max-width: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Popup Menu */
+.menuButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  text-transform: inherit;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-decoration-width: 1px !important;
+  -webkit-text-decoration-width: 1px !important;
+}
+
+.menuButton:hover,
+.menuButton:focus,
+.menuButton:active {
+  text-decoration: none;
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-decoration-width: 1px !important;
+  -webkit-text-decoration-width: 1px !important;
+}
+
+.menuText {
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-decoration-width: 1px !important;
+  -webkit-text-decoration-width: 1px !important;
+}
+
+.menuButton:hover .menuText,
+.menuButton:focus .menuText,
+.menuButton:active .menuText {
+  text-decoration-thickness: 1px !important;
+  -webkit-text-decoration-thickness: 1px !important;
+  text-decoration-width: 1px !important;
+  -webkit-text-decoration-width: 1px !important;
+}
+
+/* Fix specifico per Safari: forza tutte le sottolineature dei button a 1px */
+@supports (-webkit-appearance: none) {
+  button.menuButton,
+  button.menuButton:hover,
+  button.menuButton:focus,
+  button.menuButton:active,
+  button.menuButton .menuText,
+  button.menuButton:hover .menuText,
+  button.menuButton:focus .menuText,
+  button.menuButton:active .menuText {
+    -webkit-text-decoration-thickness: 1px !important;
+    text-decoration-thickness: 1px !important;
+  }
+}
+
+.menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  background-color: var(--dynamic-background, var(--color-background, #ffffff));
+  overflow-y: auto;
+}
+
+.menuPopupHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2001;
+  background-color: var(--dynamic-background, var(--color-background, #ffffff));
+  border-bottom: 1px solid currentColor;
+}
+
+.menuContent {
+  padding-top: calc(0.3rem * 2 + 24px + 1px);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: calc(0.3rem * 2 + 24px + 1px) 0.3rem 2rem 0.3rem;
+}
+
+@media (max-width: 890px) {
+  .menuContent {
+    padding-left: calc(4.8px + 0.3rem);
+    padding-right: 0.3rem;
+    justify-content: flex-start;
+  }
+}
+
+.menuNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 3rem;
+}
+
+.menuItem {
+  font-family: var(--font-heading) !important;
+  font-weight: var(--font-heading-weight) !important;
+  font-style: var(--font-heading-style) !important;
+  text-transform: var(--font-heading-transform, normal) !important;
+  font-size: var(--font-heading-size-mobile, var(--font-heading-size-desktop, '32px')) !important;
+  line-height: var(--font-heading-line-height) !important;
+  color: inherit;
+  text-decoration: none !important;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  display: block;
+  width: 100%;
+}
+
+.menuItem:hover,
+.menuItem:active,
+.menuItem:focus {
+  text-decoration: none !important;
+}
+
+/* Quando Munchberg è attivo: forza capitalize per "FUN HERE" nel menu popup */
+body.font-munchberg .menuItem,
+.font-munchberg .menuItem,
+html.font-munchberg .menuItem {
+  text-transform: capitalize !important;
+}
+
+.menuArrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+}

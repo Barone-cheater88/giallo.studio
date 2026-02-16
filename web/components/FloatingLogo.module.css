@@ -1,0 +1,33 @@
+.floatingLogo {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  text-decoration: none;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-end;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.logoContainer {
+  padding: 0.4rem;
+}
+
+.logo {
+  width: auto !important;
+  height: 30px !important;
+  max-width: 75px !important;
+  max-height: 30px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.rectangle {
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-text, #ffffff);
+  margin-top: 0;
+}
+

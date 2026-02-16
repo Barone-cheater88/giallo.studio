@@ -1,0 +1,613 @@
+.page {
+  position: relative;
+}
+
+.container {
+  position: relative;
+  /* Assicurati che non ci sia overflow che blocca sticky */
+  overflow: visible;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+/* ============================================
+   WRAPPER DESKTOP / MOBILE HOME
+   ============================================ */
+
+.desktopHome {
+  display: block;
+  /* Assicurati che non ci sia overflow che blocca sticky */
+  overflow: visible;
+}
+
+.mobileHome {
+  display: none;
+}
+
+@media (max-width: 890px) {
+  .desktopHome {
+    display: none;
+  }
+
+  .mobileHome {
+    display: block;
+    overflow-x: hidden;
+    position: relative;
+    touch-action: pan-y;
+    overflow-y: visible;
+  }
+  
+  /* Assicurati che ResponsiveTitle non interferisca su mobile */
+  .desktopHome .responsiveTitle,
+  .desktopHome h1[style*="position: fixed"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Forza la versione mobile a sparire su desktop, incluso il titolo e la tabella */
+@media (min-width: 891px) {
+  .mobileHome,
+  .mobileHomeInner,
+  .mobileHomeTitle,
+  .mobileHomeCaption,
+  .mobileTable,
+  .mobileTableRow,
+  .mobileRowContent,
+  .mobileRowTitle,
+  .mobileRowOrder,
+  .mobileRowName,
+  .mobileRowCategory,
+  .mobileRowClientYear,
+  .mobileRowDescription {
+    display: none !important;
+  }
+}
+
+/* Nascondi sempre il titolo mobile nella cella dell'ordinamento (desktop uguale all'originale) */
+.mobileTitle {
+  display: none !important;
+}
+
+/* Nascondi Client – Year mobile su desktop */
+.mobileClientYear {
+  display: none !important;
+}
+
+@media (max-width: 890px) {
+  .mobileClientYear {
+    display: block !important;
+  }
+}
+
+/* ============================================
+   STILI HOME MOBILE
+   ============================================ */
+
+.mobileHomeInner {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  margin-bottom: 0;
+  position: relative;
+  touch-action: pan-y;
+  overflow-y: visible;
+  overflow-x: hidden;
+}
+
+.mobileHomeTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-style: var(--font-heading-style);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+  max-width: 98vw;
+  margin: 0 auto;
+  overflow: hidden;
+  padding-top: 20px;
+}
+
+/* Titolo fixed che appare durante lo scroll (solo mobile) */
+.mobileHomeTitleFixed {
+  position: fixed;
+  top: 45px;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  max-width: 100vw;
+  z-index: 10;
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform);
+  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, '18px'));
+  letter-spacing: 0.06em;
+  background-color: var(--dynamic-background, var(--color-background, var(--background, #ffffff)));
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  border-bottom: 1px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mobileHomeTitleFixedMarquee {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.mobileHomeTitleFixedMarqueeInner {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+  -webkit-animation: mobileTitleMarquee var(--animation-duration, 15s) linear infinite;
+  animation: mobileTitleMarquee var(--animation-duration, 15s) linear infinite;
+}
+
+.mobileHomeTitleFixedMarqueeInner[style*="none"] {
+  -webkit-animation: mobileTitleMarquee 15s linear infinite;
+  animation: mobileTitleMarquee 15s linear infinite;
+}
+
+.mobileHomeTitleFixedText {
+  display: inline-block;
+  padding-right: 0;
+  padding-bottom: 1px;
+  margin-right: 5px;
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  text-transform: var(--font-body-transform);
+  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, '18px'));
+  line-height: var(--font-body-line-height);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+@-webkit-keyframes mobileTitleMarquee {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes mobileTitleMarquee {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+}
+
+.mobileHomeTitleFixed.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Quando il font Dotty è attivo, modifica top e padding-bottom */
+body.font-dotty .mobileHomeTitleFixed.visible,
+.font-dotty .mobileHomeTitleFixed.visible,
+html.font-dotty .mobileHomeTitleFixed.visible {
+  top: 40px !important;
+  padding-bottom: 0px !important;
+}
+
+/* Quando il font IBM Plex Mono è attivo, modifica top */
+body.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
+.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
+html.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
+body[style*="IBM Plex Mono"] .mobileHomeTitleFixed.visible,
+[style*="IBM Plex Mono"] .mobileHomeTitleFixed.visible {
+  top: 43px !important;
+}
+
+/* Quando il font Munchberg è attivo, modifica top e padding-top */
+body.font-munchberg .mobileHomeTitleFixed.visible,
+.font-munchberg .mobileHomeTitleFixed.visible,
+html.font-munchberg .mobileHomeTitleFixed.visible {
+  top: 49px !important;
+  padding-top: 10px !important;
+}
+
+@media (min-width: 891px) {
+  .mobileHomeTitleFixed {
+    display: none !important;
+  }
+}
+
+
+.mobileHomeCaption {
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: uppercase;
+  text-align: left;
+  opacity: 0.8;
+}
+
+/* ============================================
+   STILI TABELLA MOBILE - COMPLETAMENTE SEPARATI
+   ============================================ */
+
+.mobileTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 0;
+  border-top: 1px solid currentColor;
+}
+
+.mobileTableRow {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: none;
+  padding: 10px 0;
+}
+
+.mobileTableRow:first-child {
+  border-top: none;
+}
+
+.mobileTableRow:last-child {
+  border-bottom: none;
+}
+
+.mobileRowContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+/* [Numero ordinamento] Nome - stesso rigo */
+.mobileRowTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: var(--font-subtitle);
+  font-weight: var(--font-subtitle-weight);
+  font-style: var(--font-subtitle-style);
+  font-size: var(--font-subtitle-size-mobile, var(--font-subtitle-size-desktop, '28px'));
+  line-height: var(--font-subtitle-line-height);
+  text-transform: var(--font-subtitle-transform, none);
+  color: inherit;
+}
+
+.mobileRowOrder {
+  font-family: var(--font-subtitle);
+  font-weight: var(--font-subtitle-weight);
+  font-style: var(--font-subtitle-style);
+  font-size: var(--font-subtitle-size-mobile, var(--font-subtitle-size-desktop, '28px'));
+  line-height: var(--font-subtitle-line-height);
+  text-transform: var(--font-subtitle-transform, none);
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.mobileRowName {
+  font-family: var(--font-subtitle);
+  font-weight: var(--font-subtitle-weight);
+  font-style: var(--font-subtitle-style);
+  font-size: var(--font-subtitle-size-mobile, var(--font-subtitle-size-desktop, '28px'));
+  line-height: var(--font-subtitle-line-height);
+  text-transform: var(--font-subtitle-transform, none);
+  color: inherit;
+}
+
+.mobileRowArrow {
+  font-family: var(--font-subtitle);
+  font-weight: var(--font-subtitle-weight);
+  font-style: var(--font-subtitle-style);
+  font-size: var(--font-subtitle-size-mobile, var(--font-subtitle-size-desktop, '28px'));
+  line-height: var(--font-subtitle-line-height);
+  text-transform: var(--font-subtitle-transform, none);
+  color: inherit;
+  margin-left: auto;
+}
+
+/* Category – Client – Year - stesso rigo */
+.mobileRowCategoryClientYear {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, none);
+  color: inherit;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.mobileRowCategory {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, none);
+  color: inherit;
+}
+
+.mobileRowSeparator {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  color: inherit;
+  margin: 0 4px;
+}
+
+/* Client - Anno - stesso rigo */
+.mobileRowClientYear {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, none);
+  color: inherit;
+}
+
+.mobileRowBullet {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  color: inherit;
+  flex-shrink: 0;
+}
+
+/* Description - rigo separato con effetto marquee */
+.mobileRowDescriptionWrapper {
+  margin-top: 4px;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.mobileRowDescription {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+  animation: mobileMarquee var(--animation-duration, 15s) linear infinite;
+}
+
+.mobileRowDescription[style*="none"] {
+  animation: none;
+}
+
+.mobileRowDescriptionText {
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, '18px')) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform, none) !important;
+  color: inherit;
+  display: inline-block;
+  padding-right: 3em;
+  flex-shrink: 0;
+}
+
+@keyframes mobileMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================
+   STILI TABELLA DESKTOP - ORIGINALI
+   ============================================ */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: -10px; /* Margine negativo per avvicinare ulteriormente al titolo */
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 5fr 15fr 20fr 15fr 40fr 5fr;
+  gap: 16px;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid currentColor;
+}
+
+
+.header {
+  padding-bottom: 12px;
+  text-transform: uppercase;
+  font-family: var(--font-caption);
+  font-weight: var(--font-caption-weight);
+  font-style: var(--font-caption-style);
+  font-size: var(--font-caption-size-desktop);
+  line-height: var(--font-caption-line-height);
+}
+
+.header .cell {
+  font-family: var(--font-caption);
+  font-weight: var(--font-caption-weight);
+  font-style: var(--font-caption-style);
+  font-size: var(--font-caption-size-desktop);
+  line-height: var(--font-caption-line-height);
+  text-transform: var(--font-caption-transform);
+}
+
+.cell {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-desktop);
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform);
+}
+
+/* Descrizione come body - colonna Description (desktop) */
+.row .cell:nth-child(5) .cellInner {
+  font-family: var(--font-body) !important;
+  font-weight: var(--font-body-weight) !important;
+  font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-desktop) !important;
+  line-height: var(--font-body-line-height) !important;
+  text-transform: var(--font-body-transform) !important;
+}
+
+.right {
+  text-align: right;
+}
+
+.orderCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowBullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0 !important;
+  flex: 0 0 auto;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.row:hover .rowBullet {
+  opacity: 1 !important;
+}
+
+.header .rowBullet,
+.header:hover .rowBullet {
+  opacity: 0 !important;
+}
+
+/* Quando si fa hover sulla tabella, le righe normali diventano trasparenti */
+.table:hover .row:not(:hover):not(.header):not(.rowAnimated) {
+  opacity: 0.4;
+  transition: opacity 0.2s ease-out;
+}
+
+.table .header:hover ~ .row:not(.rowAnimated) {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease-out;
+}
+
+.header {
+  opacity: 1 !important;
+}
+
+a.row {
+  text-decoration: none;
+  color: inherit;
+}
+
+.muted {
+  font-weight: 400;
+}
+
+.rowAnimated {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rowVisible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cellInner {
+  display: inline-block;
+  max-width: 100%;
+  will-change: transform;
+}
+
+.row:hover .overflow {
+  animation: marqueeX 6s linear infinite;
+}
+
+@keyframes marqueeX {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-60%);
+  }
+}
+
+/* ============================================
+   NASCONDI TUTTE LE CLASSI DELLA TABELLA SU MOBILE
+   ============================================ */
+
+@media (max-width: 890px) {
+  /* Nascondi tutte le classi della tabella su mobile */
+  .table,
+  .row,
+  .cell,
+  .header,
+  .orderCell,
+  .rowBullet,
+  .cellInner,
+  .muted,
+  .rowAnimated,
+  .rowVisible {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
