@@ -90,7 +90,7 @@ body {
   color: var(--color-text, var(--foreground));
   background: var(--color-background, var(--background));
   /* Typography from Site Settings (fallbacks keep it safe) */
-  font-family: var(--font-body, Arial, Helvetica, sans-serif);
+  font-family: var(--font-body, 'Helvetica Neue', Helvetica, Arial, sans-serif);
   font-weight: var(--font-body-weight, 400);
   font-style: var(--font-body-style, normal);
   text-transform: var(--font-body-transform, normal);
@@ -98,6 +98,9 @@ body {
   font-size: calc(var(--font-body-size-desktop, 16) * 1px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Forza il rendering del font su mobile */
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
 }
 
 @media (max-width: 890px) {

@@ -11,11 +11,17 @@ import Preloader from "@/components/Preloader";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', '-apple-system', 'Arial', 'sans-serif'],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+  fallback: ['monospace'],
 });
 
 export async function generateMetadata() {
@@ -122,8 +128,8 @@ export default async function RootLayout({ children }) {
     }
   }
 
-  // Genera @font-face per i custom fonts
-  const customFontStyles = settings?.customFonts?.map((font) => {
+  // Genera @font-face per i custom fonts e preload links
+  const customFontData = settings?.customFonts?.map((font) => {
     if (!font.familyName) return null
     
     const fontFamily = font.familyName
@@ -132,7 +138,11 @@ export default async function RootLayout({ children }) {
     
     // Se c'è un URL del font (es. Google Fonts)
     if (font.fontUrl) {
-      return `@import url('${font.fontUrl}');`
+      return {
+        type: 'import',
+        content: `@import url('${font.fontUrl}');`,
+        preload: null
+      }
     }
     
     // Se c'è un file font caricato
@@ -140,44 +150,79 @@ export default async function RootLayout({ children }) {
       const fontUrl = font.fontFile.asset.url
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
+      let mimeType = 'font/woff2'
       
-      if (fileExtension === 'woff') format = 'woff'
-      else if (fileExtension === 'woff2') format = 'woff2'
-      else if (fileExtension === 'ttf') format = 'truetype'
-      else if (fileExtension === 'otf') format = 'opentype'
+      if (fileExtension === 'woff') {
+        format = 'woff'
+        mimeType = 'font/woff'
+      } else if (fileExtension === 'woff2') {
+        format = 'woff2'
+        mimeType = 'font/woff2'
+      } else if (fileExtension === 'ttf') {
+        format = 'truetype'
+        mimeType = 'font/ttf'
+      } else if (fileExtension === 'otf') {
+        format = 'opentype'
+        mimeType = 'font/otf'
+      }
       
       // Per Safari: se il font è WOFF2, aggiungi anche una versione senza format() come fallback
-      // Safari a volte ha problemi con il format() specificato per WOFF2
-      // Se il font è già TTF, usalo direttamente (Safari lo preferisce)
       let srcDeclaration = `url('${fontUrl}') format('${format}')`
       
       // Se è WOFF2 e Safari potrebbe avere problemi, aggiungi fallback senza format
       if (format === 'woff2') {
-        // Safari può avere problemi con WOFF2, quindi aggiungiamo anche senza format come fallback
         srcDeclaration = `url('${fontUrl}') format('woff2'), url('${fontUrl}')`
       }
       
-      return `
-        @font-face {
-          font-family: '${fontFamily}';
-          src: ${srcDeclaration};
-          font-weight: ${fontWeight};
-          font-style: ${fontStyle};
-          font-display: swap;
-          /* Fix per Safari: assicura che il font venga caricato correttamente */
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
+      return {
+        type: 'font-face',
+        content: `
+          @font-face {
+            font-family: '${fontFamily}';
+            src: ${srcDeclaration};
+            font-weight: ${fontWeight};
+            font-style: ${fontStyle};
+            font-display: swap;
+            /* Fix per Safari e mobile: assicura che il font venga caricato correttamente */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+        `,
+        preload: {
+          href: fontUrl,
+          as: 'font',
+          type: mimeType,
+          crossOrigin: 'anonymous'
         }
-      `
+      }
     }
     
     return null
-  }).filter(Boolean).join('\n')
+  }).filter(Boolean)
+
+  const customFontStyles = customFontData
+    .map(data => data.content)
+    .join('\n')
+  
+  const fontPreloads = customFontData
+    .filter(data => data.preload)
+    .map(data => data.preload)
 
 
   return (
     <html lang="it">
       <head>
+        {/* Preload font files per migliorare il caricamento su mobile */}
+        {fontPreloads && fontPreloads.map((preload, index) => (
+          <link
+            key={index}
+            rel="preload"
+            href={preload.href}
+            as={preload.as}
+            type={preload.type}
+            crossOrigin={preload.crossOrigin}
+          />
+        ))}
         {customFontStyles && (
           <style dangerouslySetInnerHTML={{ __html: customFontStyles }} />
         )}
