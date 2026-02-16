@@ -765,76 +765,27 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
     const config = fontConfigurations[fontName]
     if (!config) return
 
-    // Font custom da Sanity che devono essere caricati
-    const customFonts = ['Munchberg', 'Droulers', 'Dotty', 'Comic Sans']
-    const isCustomFont = customFonts.includes(fontName)
-
-    // Se è un font custom, aspetta che sia caricato prima di applicarlo
-    const applyFontStyles = () => {
-      if (typeof document !== 'undefined') {
-        // Usa setTimeout per assicurarsi che il DOM sia pronto
-        setTimeout(() => {
-          if (fontName === 'Munchberg') {
-            document.body.classList.add('font-munchberg')
-            document.documentElement.classList.add('font-munchberg')
-          } else {
-            document.body.classList.remove('font-munchberg')
-            document.documentElement.classList.remove('font-munchberg')
-          }
-          
-          // Aggiungi/rimuovi classe per IBM Plex Mono font
-          if (fontName === 'IBM Plex Mono') {
-            document.body.classList.add('font-ibm-plex-mono')
-            document.documentElement.classList.add('font-ibm-plex-mono')
-          } else {
-            document.body.classList.remove('font-ibm-plex-mono')
-            document.documentElement.classList.remove('font-ibm-plex-mono')
-          }
-        }, 0)
-      }
-    }
-
-    // Se è un font custom, verifica che sia caricato
-    if (isCustomFont && typeof document !== 'undefined' && document.fonts && document.fonts.check) {
-      // Verifica se il font è caricato
-      const fontFamily = config.family.split(',')[0].replace(/['"]/g, '').trim()
-      const fontWeight = config.classes.body.weight || '400'
-      const fontStyle = config.style || 'normal'
-      
-      // Prova a verificare se il font è disponibile
-      const checkFont = () => {
-        // Usa document.fonts.check se disponibile (non supportato su tutti i browser)
-        if (document.fonts && document.fonts.check) {
-          const isLoaded = document.fonts.check(`1em "${fontFamily}"`, fontWeight)
-          if (isLoaded) {
-            applyFontStyles()
-          } else {
-            // Se non è caricato, aspetta un po' e riprova
-            setTimeout(() => {
-              // Aspetta che i font siano caricati (max 3 secondi)
-              if (document.fonts.ready) {
-                document.fonts.ready.then(() => {
-                  applyFontStyles()
-                }).catch(() => {
-                  // Fallback: applica comunque dopo un timeout
-                  setTimeout(applyFontStyles, 500)
-                })
-              } else {
-                // Fallback se document.fonts.ready non è disponibile
-                setTimeout(applyFontStyles, 500)
-              }
-            }, 100)
-          }
+    // Aggiungi/rimuovi classe per Munchberg font
+    if (typeof document !== 'undefined') {
+      // Usa setTimeout per assicurarsi che il DOM sia pronto
+      setTimeout(() => {
+        if (fontName === 'Munchberg') {
+          document.body.classList.add('font-munchberg')
+          document.documentElement.classList.add('font-munchberg')
         } else {
-          // Fallback per browser che non supportano document.fonts.check
-          setTimeout(applyFontStyles, 300)
+          document.body.classList.remove('font-munchberg')
+          document.documentElement.classList.remove('font-munchberg')
         }
-      }
-      
-      checkFont()
-    } else {
-      // Font di sistema o Google Fonts - applica immediatamente
-      applyFontStyles()
+        
+        // Aggiungi/rimuovi classe per IBM Plex Mono font
+        if (fontName === 'IBM Plex Mono') {
+          document.body.classList.add('font-ibm-plex-mono')
+          document.documentElement.classList.add('font-ibm-plex-mono')
+        } else {
+          document.body.classList.remove('font-ibm-plex-mono')
+          document.documentElement.classList.remove('font-ibm-plex-mono')
+        }
+      }, 0)
     }
 
     // Applica le variabili CSS per ogni classe tipografica
