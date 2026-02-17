@@ -1,23 +1,41 @@
 // Proxy route per servire i font da Sanity CDN con CORS abilitato
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 export async function GET(request, { params }) {
   try {
     // Ricostruisci l'URL del font da Sanity
     const path = params.path.join('/')
     const sanityUrl = `https://cdn.sanity.io/${path}`
     
+    console.log(`[Font Proxy] Fetching font from: ${sanityUrl}`)
+    
     // Scarica il font da Sanity (lato server non ci sono problemi CORS)
     const response = await fetch(sanityUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': '*/*',
+        'Referer': 'https://giallo.studio/',
       },
+      // Aggiungi redirect follow
+      redirect: 'follow',
     })
     
+    console.log(`[Font Proxy] Response status: ${response.status} ${response.statusText}`)
+    
     if (!response.ok) {
-      console.error(`Failed to fetch font from Sanity: ${response.status} ${response.statusText}`)
-      return new Response(`Font not found: ${response.status}`, { 
+      const errorText = await response.text().catch(() => 'Unable to read error response')
+      console.error(`[Font Proxy] Failed to fetch font: ${response.status} ${response.statusText}`, errorText)
+      
+      return new Response(JSON.stringify({ 
+        error: 'Font not found',
+        status: response.status,
+        url: sanityUrl,
+        message: errorText.substring(0, 200)
+      }), { 
         status: response.status,
         headers: {
+          'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         }
       })
@@ -36,6 +54,8 @@ export async function GET(request, { params }) {
     // Ottieni il buffer del font
     const buffer = await response.arrayBuffer()
     
+    console.log(`[Font Proxy] Successfully fetched font: ${buffer.byteLength} bytes, type: ${contentType}`)
+    
     // Restituisci il font con le intestazioni CORS corrette
     return new Response(buffer, {
       status: 200,
@@ -46,13 +66,19 @@ export async function GET(request, { params }) {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Cache-Control': 'public, max-age=31536000, immutable',
         'Vary': 'Accept-Encoding',
+        'Content-Length': buffer.byteLength.toString(),
       },
     })
   } catch (error) {
-    console.error('Error proxying font:', error)
-    return new Response(`Internal Server Error: ${error.message}`, { 
+    console.error('[Font Proxy] Error proxying font:', error)
+    return new Response(JSON.stringify({ 
+      error: 'Internal Server Error',
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }), { 
       status: 500,
       headers: {
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     })
