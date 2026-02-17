@@ -159,11 +159,12 @@ export default async function RootLayout({ children }) {
       // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
       let proxyUrl = url
       
-      // Se l'URL è di Sanity CDN, usa il proxy
+      // Se l'URL è di Sanity CDN, usa il proxy per evitare problemi CORS
       if (url.includes('cdn.sanity.io')) {
         // Estrai il path dopo cdn.sanity.io/
         const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url)
         const path = urlObj.pathname.substring(1) // Rimuovi lo slash iniziale
+        // Usa il proxy - assicurati che il path sia corretto
         proxyUrl = `/api/fonts/${path}`
       } else if (url.startsWith('//')) {
         // Se inizia con //, potrebbe essere Sanity

@@ -38,6 +38,24 @@ const nextConfig = {
           }
         ],
       },
+      // Headers CORS per le route API dei font
+      {
+        source: '/api/fonts/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, OPTIONS'
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type'
+          }
+        ],
+      },
     ]
   },
 };
