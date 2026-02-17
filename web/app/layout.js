@@ -156,13 +156,26 @@ export default async function RootLayout({ children }) {
     
     // Genera src declarations per ogni formato
     sortedFiles.forEach(({ url, ext }) => {
-      // Assicura che l'URL sia assoluto
-      // Sanity CDN può restituire URL che iniziano con // o https://
-      let absoluteUrl = url
-      if (url.startsWith('//')) {
-        absoluteUrl = `https:${url}`
-      } else if (!url.startsWith('http')) {
-        absoluteUrl = `https://${url}`
+      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
+      let proxyUrl = url
+      
+      // Se l'URL è di Sanity CDN, usa il proxy
+      if (url.includes('cdn.sanity.io')) {
+        // Estrai il path dopo cdn.sanity.io/
+        const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url)
+        const path = urlObj.pathname.substring(1) // Rimuovi lo slash iniziale
+        proxyUrl = `/api/fonts/${path}`
+      } else if (url.startsWith('//')) {
+        // Se inizia con //, potrebbe essere Sanity
+        if (url.includes('cdn.sanity.io')) {
+          const urlObj = new URL(`https:${url}`)
+          const path = urlObj.pathname.substring(1)
+          proxyUrl = `/api/fonts/${path}`
+        } else {
+          proxyUrl = `https:${url}`
+        }
+      } else if (!url.startsWith('http') && !url.startsWith('/')) {
+        proxyUrl = `https://${url}`
       }
       
       let format = 'woff2'
@@ -174,23 +187,36 @@ export default async function RootLayout({ children }) {
       
       // EOT richiede formato speciale
       if (ext === 'eot') {
-        srcDeclarations.push(`url('${absoluteUrl}')`)
-        srcDeclarations.push(`url('${absoluteUrl}?#iefix') format('embedded-opentype')`)
+        srcDeclarations.push(`url('${proxyUrl}')`)
+        srcDeclarations.push(`url('${proxyUrl}?#iefix') format('embedded-opentype')`)
       } else {
-        srcDeclarations.push(`url('${absoluteUrl}') format('${format}')`)
+        srcDeclarations.push(`url('${proxyUrl}') format('${format}')`)
       }
     })
     
     // Fallback per retrocompatibilità: usa fontFile se fontFiles è vuoto
     if (srcDeclarations.length === 0 && font.fontFile?.asset?.url) {
       const fontUrl = font.fontFile.asset.url
-      // Sanity CDN può restituire URL che iniziano con // o https://
-      let absoluteUrl = fontUrl
-      if (fontUrl.startsWith('//')) {
-        absoluteUrl = `https:${fontUrl}`
-      } else if (!fontUrl.startsWith('http')) {
-        absoluteUrl = `https://${fontUrl}`
+      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
+      let proxyUrl = fontUrl
+      
+      // Se l'URL è di Sanity CDN, usa il proxy
+      if (fontUrl.includes('cdn.sanity.io')) {
+        const urlObj = new URL(fontUrl.startsWith('//') ? `https:${fontUrl}` : fontUrl)
+        const path = urlObj.pathname.substring(1)
+        proxyUrl = `/api/fonts/${path}`
+      } else if (fontUrl.startsWith('//')) {
+        if (fontUrl.includes('cdn.sanity.io')) {
+          const urlObj = new URL(`https:${fontUrl}`)
+          const path = urlObj.pathname.substring(1)
+          proxyUrl = `/api/fonts/${path}`
+        } else {
+          proxyUrl = `https:${fontUrl}`
+        }
+      } else if (!fontUrl.startsWith('http') && !fontUrl.startsWith('/')) {
+        proxyUrl = `https://${fontUrl}`
       }
+      
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
       
@@ -199,7 +225,7 @@ export default async function RootLayout({ children }) {
       else if (fileExtension === 'ttf') format = 'truetype'
       else if (fileExtension === 'otf') format = 'opentype'
       
-      srcDeclarations.push(`url('${absoluteUrl}') format('${format}')`)
+      srcDeclarations.push(`url('${proxyUrl}') format('${format}')`)
     }
     
     if (srcDeclarations.length === 0) return null
@@ -264,14 +290,28 @@ export default async function RootLayout({ children }) {
       if (!firstFile?.asset?.url) return null
       
       const url = firstFile.asset.url
-      // Assicura che l'URL sia assoluto
-      // Sanity CDN può restituire URL che iniziano con // o https://
-      let absoluteUrl = url
-      if (url.startsWith('//')) {
-        absoluteUrl = `https:${url}`
-      } else if (!url.startsWith('http')) {
-        absoluteUrl = `https://${url}`
+      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
+      let proxyUrl = url
+      
+      // Se l'URL è di Sanity CDN, usa il proxy
+      if (url.includes('cdn.sanity.io')) {
+        const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url)
+        const path = urlObj.pathname.substring(1)
+        proxyUrl = `/api/fonts/${path}`
+      } else if (url.startsWith('//')) {
+        if (url.includes('cdn.sanity.io')) {
+          const urlObj = new URL(`https:${url}`)
+          const path = urlObj.pathname.substring(1)
+          proxyUrl = `/api/fonts/${path}`
+        } else {
+          proxyUrl = `https:${url}`
+        }
+      } else if (!url.startsWith('http') && !url.startsWith('/')) {
+        proxyUrl = `https://${url}`
       }
+      
+      // Per il preload, usa l'URL relativo del proxy (funziona anche in <head>)
+      const preloadUrl = proxyUrl
       const ext = url.split('.').pop()?.toLowerCase() || ''
       let type = 'font/woff2'
       if (ext === 'woff') type = 'font/woff'
@@ -282,7 +322,7 @@ export default async function RootLayout({ children }) {
         <link
           key={`preload-${font.familyName}`}
           rel="preload"
-          href={absoluteUrl}
+          href={preloadUrl}
           as="font"
           type={type}
           crossOrigin="anonymous"
