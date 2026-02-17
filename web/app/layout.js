@@ -157,7 +157,13 @@ export default async function RootLayout({ children }) {
     // Genera src declarations per ogni formato
     sortedFiles.forEach(({ url, ext }) => {
       // Assicura che l'URL sia assoluto
-      const absoluteUrl = url.startsWith('http') ? url : `https:${url}`
+      // Sanity CDN può restituire URL che iniziano con // o https://
+      let absoluteUrl = url
+      if (url.startsWith('//')) {
+        absoluteUrl = `https:${url}`
+      } else if (!url.startsWith('http')) {
+        absoluteUrl = `https://${url}`
+      }
       
       let format = 'woff2'
       if (ext === 'woff') format = 'woff'
@@ -171,16 +177,20 @@ export default async function RootLayout({ children }) {
         srcDeclarations.push(`url('${absoluteUrl}')`)
         srcDeclarations.push(`url('${absoluteUrl}?#iefix') format('embedded-opentype')`)
       } else {
-        // Aggiungi crossorigin per Chrome/Firefox se il font è su dominio esterno
-        const needsCrossOrigin = absoluteUrl.includes('cdn.sanity.io')
-        srcDeclarations.push(`url('${absoluteUrl}') format('${format}')${needsCrossOrigin ? '' : ''}`)
+        srcDeclarations.push(`url('${absoluteUrl}') format('${format}')`)
       }
     })
     
     // Fallback per retrocompatibilità: usa fontFile se fontFiles è vuoto
     if (srcDeclarations.length === 0 && font.fontFile?.asset?.url) {
       const fontUrl = font.fontFile.asset.url
-      const absoluteUrl = fontUrl.startsWith('http') ? fontUrl : `https:${fontUrl}`
+      // Sanity CDN può restituire URL che iniziano con // o https://
+      let absoluteUrl = fontUrl
+      if (fontUrl.startsWith('//')) {
+        absoluteUrl = `https:${fontUrl}`
+      } else if (!fontUrl.startsWith('http')) {
+        absoluteUrl = `https://${fontUrl}`
+      }
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
       
@@ -208,7 +218,8 @@ export default async function RootLayout({ children }) {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         /* Fix per Chrome/Firefox: assicura che i font vengano caricati correttamente */
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        font-feature-settings: normal;
+        font-variant: normal;
       }
     `
   }).filter(Boolean).join('\n')
@@ -254,7 +265,13 @@ export default async function RootLayout({ children }) {
       
       const url = firstFile.asset.url
       // Assicura che l'URL sia assoluto
-      const absoluteUrl = url.startsWith('http') ? url : `https:${url}`
+      // Sanity CDN può restituire URL che iniziano con // o https://
+      let absoluteUrl = url
+      if (url.startsWith('//')) {
+        absoluteUrl = `https:${url}`
+      } else if (!url.startsWith('http')) {
+        absoluteUrl = `https://${url}`
+      }
       const ext = url.split('.').pop()?.toLowerCase() || ''
       let type = 'font/woff2'
       if (ext === 'woff') type = 'font/woff'
@@ -279,7 +296,10 @@ export default async function RootLayout({ children }) {
       <head>
         {fontPreloads}
         {customFontStyles && (
-          <style dangerouslySetInnerHTML={{ __html: customFontStyles }} />
+          <style 
+            id="custom-fonts-styles"
+            dangerouslySetInnerHTML={{ __html: customFontStyles }} 
+          />
         )}
         <StructuredData data={organizationSchema} />
       </head>
