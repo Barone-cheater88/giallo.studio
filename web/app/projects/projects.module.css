@@ -435,15 +435,21 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   text-size-adjust: 100% !important;
 }
 
-/* Forza dimensione font-body su mobile per iPhone */
+/* Forza dimensione font-body su mobile per iPhone - usa valore diretto per garantire dimensione corretta */
 @media (max-width: 890px) {
   .mobileRowDescriptionText {
-    font-size: var(--font-body-size-mobile, 14px) !important;
+    /* Usa la variabile CSS se disponibile, altrimenti usa 13px (leggermente più piccolo del body standard) */
+    font-size: var(--font-body-size-mobile, 13px) !important;
     /* Fix specifico per iOS: forza il valore senza permettere auto-ridimensionamento */
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
-    /* Assicura che il font-size sia applicato correttamente */
-    font-size: var(--font-body-size-mobile) !important;
+  }
+  
+  /* Aumenta specificità per essere sicuri che venga applicato */
+  .mobileRowDescription .mobileRowDescriptionText {
+    font-size: var(--font-body-size-mobile, 13px) !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
   }
 }
 
@@ -451,7 +457,14 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 890px) {
     .mobileRowDescriptionText {
-      font-size: var(--font-body-size-mobile, 14px) !important;
+      font-size: var(--font-body-size-mobile, 13px) !important;
+      -webkit-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
+    }
+    
+    /* Aumenta specificità anche per iOS */
+    .mobileRowDescription .mobileRowDescriptionText {
+      font-size: var(--font-body-size-mobile, 13px) !important;
       -webkit-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
     }
