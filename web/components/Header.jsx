@@ -769,21 +769,35 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
     if (typeof document !== 'undefined') {
       // Usa setTimeout per assicurarsi che il DOM sia pronto
       setTimeout(() => {
+        // Rimuovi tutte le classi font prima di aggiungere quella corretta
+        const fontClasses = ['font-munchberg', 'font-ibm-plex-mono', 'font-dotty', 'font-times-new-roman', 'font-helvetica', 'font-comic-sans', 'font-droulers']
+        fontClasses.forEach(className => {
+          document.body.classList.remove(className)
+          document.documentElement.classList.remove(className)
+        })
+        
+        // Aggiungi la classe corretta per il font attivo
         if (fontName === 'Munchberg') {
           document.body.classList.add('font-munchberg')
           document.documentElement.classList.add('font-munchberg')
-        } else {
-          document.body.classList.remove('font-munchberg')
-          document.documentElement.classList.remove('font-munchberg')
-        }
-        
-        // Aggiungi/rimuovi classe per IBM Plex Mono font
-        if (fontName === 'IBM Plex Mono') {
+        } else if (fontName === 'IBM Plex Mono') {
           document.body.classList.add('font-ibm-plex-mono')
           document.documentElement.classList.add('font-ibm-plex-mono')
-        } else {
-          document.body.classList.remove('font-ibm-plex-mono')
-          document.documentElement.classList.remove('font-ibm-plex-mono')
+        } else if (fontName === 'Dotty') {
+          document.body.classList.add('font-dotty')
+          document.documentElement.classList.add('font-dotty')
+        } else if (fontName === 'Times New Roman') {
+          document.body.classList.add('font-times-new-roman')
+          document.documentElement.classList.add('font-times-new-roman')
+        } else if (fontName === 'Helvetica') {
+          document.body.classList.add('font-helvetica')
+          document.documentElement.classList.add('font-helvetica')
+        } else if (fontName === 'Comic Sans') {
+          document.body.classList.add('font-comic-sans')
+          document.documentElement.classList.add('font-comic-sans')
+        } else if (fontName === 'Droulers') {
+          document.body.classList.add('font-droulers')
+          document.documentElement.classList.add('font-droulers')
         }
       }, 0)
     }
@@ -866,15 +880,12 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
     
     // Se è Dotty, applica l'ombra bagliore a tutti gli elementi e aggiungi classe al body
     if (fontName === 'Dotty') {
-      document.body.classList.add('font-dotty')
-      document.documentElement.classList.add('font-dotty')
+      // La classe font-dotty viene già gestita nella funzione applyFont sopra
       allElements.forEach(el => {
         el.style.setProperty('text-shadow', '0 0 4px currentColor', 'important')
       })
     } else {
-      // Rimuovi l'ombra per gli altri font e rimuovi la classe
-      document.body.classList.remove('font-dotty')
-      document.documentElement.classList.remove('font-dotty')
+      // Rimuovi l'ombra per gli altri font (la classe viene già gestita nella funzione applyFont sopra)
       allElements.forEach(el => {
         el.style.removeProperty('text-shadow')
       })
