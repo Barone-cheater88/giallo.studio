@@ -150,13 +150,28 @@ export const siteSettings = defineType({
             description: 'URL del font da Google Fonts, Adobe Fonts, ecc. (lascia vuoto se carichi il file direttamente)'
           }),
           defineField({
+            name: 'fontFiles',
+            title: 'File Font (multipli formati)',
+            type: 'array',
+            description: 'Carica più formati dello stesso font per migliore compatibilità browser. Ordine consigliato: woff2, woff, ttf, eot',
+            of: [{
+              type: 'file',
+              options: {
+                accept: '.woff,.woff2,.ttf,.otf,.eot'
+              }
+            }],
+            validation: Rule => Rule.min(1).error('Carica almeno un file font')
+          }),
+          // Mantieni fontFile per retrocompatibilità
+          defineField({
             name: 'fontFile',
-            title: 'File Font',
+            title: 'File Font (singolo - deprecato)',
             type: 'file',
-            description: 'Carica il file font (.woff, .woff2, .ttf, .otf)',
+            description: 'DEPRECATO: Usa "File Font (multipli formati)" invece. Mantenuto per retrocompatibilità.',
             options: {
               accept: '.woff,.woff2,.ttf,.otf'
-            }
+            },
+            hidden: true
           }),
           defineField({
             name: 'fontWeight',
@@ -240,6 +255,20 @@ export const siteSettings = defineType({
           title: 'Open Graph Image',
           type: 'image',
           description: 'Immagine predefinita per social sharing'
+        }),
+        defineField({
+          name: 'googleAnalyticsId',
+          title: 'Google Analytics ID',
+          type: 'string',
+          description: 'ID di misurazione Google Analytics (es: G-JQNLFXZ5HS)',
+          placeholder: 'G-JQNLFXZ5HS'
+        }),
+        defineField({
+          name: 'facebookAppId',
+          title: 'Facebook App ID',
+          type: 'string',
+          description: 'ID dell\'app Facebook per Open Graph (opzionale)',
+          placeholder: '123456789'
         })
       ]
     }),

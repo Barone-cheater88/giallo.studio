@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import FloatingLogo from "@/components/FloatingLogo";
 import PageTransitionWrapper from "@/components/PageTransitionWrapper";
 import Preloader from "@/components/Preloader";
+import Analytics from "@/components/Analytics";
+import StructuredData from "@/components/StructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +28,7 @@ export async function generateMetadata() {
   const siteUrl = settings?.siteUrl || 'https://giallo.studio'
   const ogImage = settings?.seo?.ogImage?.asset?.url
   const keywords = settings?.seo?.keywords
+  const facebookAppId = settings?.seo?.facebookAppId
 
   return {
     title: {
@@ -56,6 +59,7 @@ export async function generateMetadata() {
           alt: siteTitle,
         }
       ] : [],
+      ...(facebookAppId && { appId: facebookAppId }),
     },
     twitter: {
       card: 'summary_large_image',
@@ -122,7 +126,7 @@ export default async function RootLayout({ children }) {
     }
   }
 
-  // Genera @font-face per i custom fonts
+  // Genera @font-face per i custom fonts con supporto multipli formati
   const customFontStyles = settings?.customFonts?.map((font) => {
     if (!font.familyName) return null
     
@@ -135,8 +139,41 @@ export default async function RootLayout({ children }) {
       return `@import url('${font.fontUrl}');`
     }
     
-    // Se c'è un file font caricato
-    if (font.fontFile?.asset?.url) {
+    // Supporto per multipli formati (nuovo sistema)
+    const fontFiles = font.fontFiles || []
+    let srcDeclarations = []
+    
+    // Ordina i file per priorità: woff2 > woff > ttf > otf > eot
+    const formatPriority = { 'woff2': 1, 'woff': 2, 'ttf': 3, 'otf': 4, 'eot': 5 }
+    const sortedFiles = fontFiles
+      .filter(file => file?.asset?.url)
+      .map(file => {
+        const url = file.asset.url
+        const ext = url.split('.').pop()?.toLowerCase() || ''
+        return { url, ext, priority: formatPriority[ext] || 99 }
+      })
+      .sort((a, b) => a.priority - b.priority)
+    
+    // Genera src declarations per ogni formato
+    sortedFiles.forEach(({ url, ext }) => {
+      let format = 'woff2'
+      if (ext === 'woff') format = 'woff'
+      else if (ext === 'woff2') format = 'woff2'
+      else if (ext === 'ttf') format = 'truetype'
+      else if (ext === 'otf') format = 'opentype'
+      else if (ext === 'eot') format = 'embedded-opentype'
+      
+      // EOT richiede formato speciale
+      if (ext === 'eot') {
+        srcDeclarations.push(`url('${url}')`)
+        srcDeclarations.push(`url('${url}?#iefix') format('embedded-opentype')`)
+      } else {
+        srcDeclarations.push(`url('${url}') format('${format}')`)
+      }
+    })
+    
+    // Fallback per retrocompatibilità: usa fontFile se fontFiles è vuoto
+    if (srcDeclarations.length === 0 && font.fontFile?.asset?.url) {
       const fontUrl = font.fontFile.asset.url
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
@@ -146,34 +183,43 @@ export default async function RootLayout({ children }) {
       else if (fileExtension === 'ttf') format = 'truetype'
       else if (fileExtension === 'otf') format = 'opentype'
       
-      // Per Safari: se il font è WOFF2, aggiungi anche una versione senza format() come fallback
-      // Safari a volte ha problemi con il format() specificato per WOFF2
-      // Se il font è già TTF, usalo direttamente (Safari lo preferisce)
-      let srcDeclaration = `url('${fontUrl}') format('${format}')`
-      
-      // Se è WOFF2 e Safari potrebbe avere problemi, aggiungi fallback senza format
-      if (format === 'woff2') {
-        // Safari può avere problemi con WOFF2, quindi aggiungiamo anche senza format come fallback
-        srcDeclaration = `url('${fontUrl}') format('woff2'), url('${fontUrl}')`
-      }
-      
-      return `
-        @font-face {
-          font-family: '${fontFamily}';
-          src: ${srcDeclaration};
-          font-weight: ${fontWeight};
-          font-style: ${fontStyle};
-          font-display: swap;
-          /* Fix per Safari: assicura che il font venga caricato correttamente */
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-      `
+      srcDeclarations.push(`url('${fontUrl}') format('${format}')`)
     }
     
-    return null
+    if (srcDeclarations.length === 0) return null
+    
+    return `
+      @font-face {
+        font-family: '${fontFamily}';
+        src: ${srcDeclarations.join(', ')};
+        font-weight: ${fontWeight};
+        font-style: ${fontStyle};
+        font-display: swap;
+        /* Fix per Safari: assicura che il font venga caricato correttamente */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    `
   }).filter(Boolean).join('\n')
 
+
+  // Structured Data per Organization
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": settings?.siteTitle || "giallo.studio",
+    "url": settings?.siteUrl || "https://giallo.studio",
+    "logo": settings?.logo?.asset?.url || settings?.logoSvg?.asset?.url,
+    "description": settings?.seo?.metaDescription || settings?.siteClaim || "Independent creative studio based in Milan.",
+    ...(settings?.contactInfo?.email && { "email": settings.contactInfo.email }),
+    ...(settings?.contactInfo?.address && { "address": {
+      "@type": "PostalAddress",
+      "addressLocality": settings.contactInfo.address
+    }}),
+    ...(settings?.social?.instagram && { "sameAs": [settings.social.instagram] }),
+  }
+
+  const gaId = settings?.seo?.googleAnalyticsId
 
   return (
     <html lang="it">
@@ -181,6 +227,7 @@ export default async function RootLayout({ children }) {
         {customFontStyles && (
           <style dangerouslySetInnerHTML={{ __html: customFontStyles }} />
         )}
+        <StructuredData data={organizationSchema} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
@@ -189,6 +236,7 @@ export default async function RootLayout({ children }) {
           // I colori vengono gestiti da Header.jsx quando si cambia colore
         }}
       >
+        <Analytics gaId={gaId} />
         <Preloader
           logoSvg={settings?.logoSvg}
           logo={settings?.logo}

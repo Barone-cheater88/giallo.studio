@@ -49,6 +49,12 @@ export const siteSettingsQuery = `
     customFonts[]{
       familyName,
       fontUrl,
+      fontFiles[]{
+        asset->{
+          _id,
+          url
+        }
+      },
       fontFile{
         asset->{
           _id,
@@ -68,7 +74,9 @@ export const siteSettingsQuery = `
           url,
           metadata
         }
-      }
+      },
+      googleAnalyticsId,
+      facebookAppId
     },
     social,
     navigation[]->{
