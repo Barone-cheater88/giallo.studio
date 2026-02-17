@@ -256,7 +256,7 @@ html.font-munchberg .link {
 .link:hover,
 .link:focus,
 .link:active {
-  opacity: 0.8;
+  opacity: 0.6;
   transition: opacity 0.2s ease;
 }
 
