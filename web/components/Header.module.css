@@ -584,9 +584,16 @@ button.link:active {
   width: 100%;
 }
 
-.menuItem:hover,
+.menuItem:hover {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  text-decoration: none !important;
+}
+
 .menuItem:active,
 .menuItem:focus {
+  opacity: 1;
+  transition: opacity 0.2s ease;
   text-decoration: none !important;
 }
 
