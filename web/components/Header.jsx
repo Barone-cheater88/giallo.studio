@@ -591,7 +591,7 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
       }
     },
     'Comic Sans': {
-      family: '"Comic Sans MS", cursive',
+      family: '"ComicSansMS", sans-serif',
       style: 'normal',
       classes: {
         heading: {
@@ -1150,7 +1150,7 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
         {/* Layout desktop: menu completo */}
         <div className={styles.desktopHeader}>
           <div className={styles.currentTime}>{currentTime}</div>
-          <div className={styles.funHere}>Fun Here →</div>
+          <Link href="/archiviallo" className={styles.funHere}>Fun Here →</Link>
           <div className={styles.headerContent}>
             <nav className={styles.nav}>
               <Link 
@@ -1347,9 +1347,9 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                         >
                           Contacts <span className={styles.menuArrow}>→</span>
                         </Link>
-                        <div className={styles.menuItem}>
+                        <Link href="/archiviallo" className={styles.menuItem}>
                           FUN HERE →
-                        </div>
+                        </Link>
                       </>
                     ) : (
                       <>
@@ -1374,9 +1374,9 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                         >
                           Contacts <span className={styles.menuArrow}>→</span>
                         </Link>
-                        <div className={styles.menuItem}>
+                        <Link href="/archiviallo" className={styles.menuItem}>
                           Fun Here →
-                        </div>
+                        </Link>
                       </>
                     )}
                   </>

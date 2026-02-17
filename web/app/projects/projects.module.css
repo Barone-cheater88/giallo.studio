@@ -423,7 +423,7 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   font-family: var(--font-body) !important;
   font-weight: var(--font-body-weight) !important;
   font-style: var(--font-body-style) !important;
-  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, '18px')) !important;
+  font-size: var(--font-body-size-mobile) !important;
   line-height: var(--font-body-line-height) !important;
   text-transform: var(--font-body-transform, none) !important;
   color: inherit;

@@ -256,10 +256,8 @@ html.font-munchberg .link {
 .link:hover,
 .link:focus,
 .link:active {
-  text-decoration: underline;
-  text-decoration-thickness: 1px !important;
-  -webkit-text-decoration-thickness: 1px !important;
-  text-underline-offset: 2px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
 }
 
 /* Fix specifico per Safari: button con classe .link (COLOR e FONT) */

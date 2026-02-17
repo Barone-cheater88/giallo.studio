@@ -50,12 +50,12 @@ export default function ClientsGrid({ clients }) {
                       display: 'inline'
                     }}
                   >
-                    <span>—— </span>
+                    <span>– </span>
                     <span className="selected-clients-link">{client.name}</span>
                     <span> ↗</span>
                   </a>
                 ) : (
-                  <span>—— {client.name}</span>
+                  <span>– {client.name}</span>
                 )}
               </li>
             ))}

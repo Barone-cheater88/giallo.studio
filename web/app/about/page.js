@@ -112,7 +112,7 @@ export default async function About() {
                         padding: 0
                       }}
                     >
-                      —— {item}
+                      – {item}
                     </li>
                   ))}
                 </ul>
