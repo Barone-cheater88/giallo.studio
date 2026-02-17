@@ -6,20 +6,44 @@ export async function GET(request, { params }) {
   try {
     // Ricostruisci l'URL del font da Sanity
     const path = params.path.join('/')
+    
+    // Verifica che il path sia valido
+    if (!path || path.length === 0) {
+      return new Response(JSON.stringify({ error: 'Invalid path' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        }
+      })
+    }
+    
+    // Costruisci l'URL di Sanity - potrebbe essere files/ o images/
     const sanityUrl = `https://cdn.sanity.io/${path}`
     
     console.log(`[Font Proxy] Fetching font from: ${sanityUrl}`)
     
-    // Scarica il font da Sanity (lato server non ci sono problemi CORS)
-    const response = await fetch(sanityUrl, {
+    // Prova prima senza Referer, poi con Referer se fallisce
+    let response = await fetch(sanityUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': '*/*',
-        'Referer': 'https://giallo.studio/',
       },
-      // Aggiungi redirect follow
       redirect: 'follow',
     })
+    
+    // Se fallisce, prova con Referer
+    if (!response.ok && response.status === 403) {
+      console.log(`[Font Proxy] First attempt failed, trying with Referer...`)
+      response = await fetch(sanityUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': '*/*',
+          'Referer': 'https://giallo.studio/',
+        },
+        redirect: 'follow',
+      })
+    }
     
     console.log(`[Font Proxy] Response status: ${response.status} ${response.statusText}`)
     
