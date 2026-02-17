@@ -5,11 +5,14 @@ export const runtime = 'nodejs'
 export async function GET(request, { params }) {
   try {
     // Ricostruisci l'URL del font da Sanity
-    const path = params.path.join('/')
+    // params potrebbe essere una Promise in Next.js 15+, oppure un oggetto
+    const resolvedParams = params instanceof Promise ? await params : params
+    const pathArray = resolvedParams?.path || []
+    const path = Array.isArray(pathArray) ? pathArray.join('/') : pathArray
     
     // Verifica che il path sia valido
     if (!path || path.length === 0) {
-      return new Response(JSON.stringify({ error: 'Invalid path' }), {
+      return new Response(JSON.stringify({ error: 'Invalid path', params: resolvedParams }), {
         status: 400,
         headers: {
           'Content-Type': 'application/json',
