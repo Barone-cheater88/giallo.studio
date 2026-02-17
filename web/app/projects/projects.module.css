@@ -423,13 +423,20 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   font-family: var(--font-body) !important;
   font-weight: var(--font-body-weight) !important;
   font-style: var(--font-body-style) !important;
-  font-size: var(--font-body-size-mobile) !important;
+  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, 14px)) !important;
   line-height: var(--font-body-line-height) !important;
   text-transform: var(--font-body-transform, none) !important;
   color: inherit;
   display: inline-block;
   padding-right: 3em;
   flex-shrink: 0;
+}
+
+/* Forza dimensione font-body su mobile per iPhone */
+@media (max-width: 890px) {
+  .mobileRowDescriptionText {
+    font-size: var(--font-body-size-mobile, 14px) !important;
+  }
 }
 
 @keyframes mobileMarquee {
