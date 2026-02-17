@@ -430,12 +430,31 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   display: inline-block;
   padding-right: 3em;
   flex-shrink: 0;
+  /* Fix per iOS Safari: previene l'auto-ridimensionamento del testo */
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 /* Forza dimensione font-body su mobile per iPhone */
 @media (max-width: 890px) {
   .mobileRowDescriptionText {
     font-size: var(--font-body-size-mobile, 14px) !important;
+    /* Fix specifico per iOS: forza il valore senza permettere auto-ridimensionamento */
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    /* Assicura che il font-size sia applicato correttamente */
+    font-size: var(--font-body-size-mobile) !important;
+  }
+}
+
+/* Fix specifico per iOS Safari - usa media query con supporto per iOS */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 890px) {
+    .mobileRowDescriptionText {
+      font-size: var(--font-body-size-mobile, 14px) !important;
+      -webkit-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
+    }
   }
 }
 
