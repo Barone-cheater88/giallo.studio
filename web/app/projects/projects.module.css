@@ -423,7 +423,8 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   font-family: var(--font-body) !important;
   font-weight: var(--font-body-weight) !important;
   font-style: var(--font-body-style) !important;
-  font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, 14px)) !important;
+  /* Usa inherit per ereditare la dimensione dal body che ha già la dimensione corretta */
+  font-size: inherit !important;
   line-height: var(--font-body-line-height) !important;
   text-transform: var(--font-body-transform, none) !important;
   color: inherit;
@@ -435,11 +436,11 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   text-size-adjust: 100% !important;
 }
 
-/* Forza dimensione font-body su mobile per iPhone - usa valore diretto per garantire dimensione corretta */
+/* Forza dimensione font-body su mobile per iPhone - usa inherit per ereditare dal body */
 @media (max-width: 890px) {
   .mobileRowDescriptionText {
-    /* Usa la variabile CSS se disponibile, altrimenti usa 13px (leggermente più piccolo del body standard) */
-    font-size: var(--font-body-size-mobile, 13px) !important;
+    /* Eredita la dimensione dal body che ha già --font-body-size-mobile impostata */
+    font-size: inherit !important;
     /* Fix specifico per iOS: forza il valore senza permettere auto-ridimensionamento */
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
@@ -447,9 +448,14 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   
   /* Aumenta specificità per essere sicuri che venga applicato */
   .mobileRowDescription .mobileRowDescriptionText {
-    font-size: var(--font-body-size-mobile, 13px) !important;
+    font-size: inherit !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
+  }
+  
+  /* Assicura che il wrapper eredit la dimensione corretta */
+  .mobileRowDescriptionWrapper {
+    font-size: var(--font-body-size-mobile, 14px);
   }
 }
 
@@ -457,16 +463,20 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 890px) {
     .mobileRowDescriptionText {
-      font-size: var(--font-body-size-mobile, 13px) !important;
+      font-size: inherit !important;
       -webkit-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
     }
     
     /* Aumenta specificità anche per iOS */
     .mobileRowDescription .mobileRowDescriptionText {
-      font-size: var(--font-body-size-mobile, 13px) !important;
+      font-size: inherit !important;
       -webkit-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
+    }
+    
+    .mobileRowDescriptionWrapper {
+      font-size: var(--font-body-size-mobile, 14px);
     }
   }
 }
