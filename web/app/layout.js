@@ -156,6 +156,9 @@ export default async function RootLayout({ children }) {
     
     // Genera src declarations per ogni formato
     sortedFiles.forEach(({ url, ext }) => {
+      // Assicura che l'URL sia assoluto
+      const absoluteUrl = url.startsWith('http') ? url : `https:${url}`
+      
       let format = 'woff2'
       if (ext === 'woff') format = 'woff'
       else if (ext === 'woff2') format = 'woff2'
@@ -165,16 +168,19 @@ export default async function RootLayout({ children }) {
       
       // EOT richiede formato speciale
       if (ext === 'eot') {
-        srcDeclarations.push(`url('${url}')`)
-        srcDeclarations.push(`url('${url}?#iefix') format('embedded-opentype')`)
+        srcDeclarations.push(`url('${absoluteUrl}')`)
+        srcDeclarations.push(`url('${absoluteUrl}?#iefix') format('embedded-opentype')`)
       } else {
-        srcDeclarations.push(`url('${url}') format('${format}')`)
+        // Aggiungi crossorigin per Chrome/Firefox se il font è su dominio esterno
+        const needsCrossOrigin = absoluteUrl.includes('cdn.sanity.io')
+        srcDeclarations.push(`url('${absoluteUrl}') format('${format}')${needsCrossOrigin ? '' : ''}`)
       }
     })
     
     // Fallback per retrocompatibilità: usa fontFile se fontFiles è vuoto
     if (srcDeclarations.length === 0 && font.fontFile?.asset?.url) {
       const fontUrl = font.fontFile.asset.url
+      const absoluteUrl = fontUrl.startsWith('http') ? fontUrl : `https:${fontUrl}`
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
       
@@ -183,14 +189,17 @@ export default async function RootLayout({ children }) {
       else if (fileExtension === 'ttf') format = 'truetype'
       else if (fileExtension === 'otf') format = 'opentype'
       
-      srcDeclarations.push(`url('${fontUrl}') format('${format}')`)
+      srcDeclarations.push(`url('${absoluteUrl}') format('${format}')`)
     }
     
     if (srcDeclarations.length === 0) return null
     
+    // Prendi il primo file (woff2 se disponibile) per il preload
+    const firstFile = sortedFiles.length > 0 ? sortedFiles[0].url : (font.fontFile?.asset?.url)
+    
     return `
       @font-face {
-        font-family: '${fontFamily}';
+        font-family: "${fontFamily}";
         src: ${srcDeclarations.join(', ')};
         font-weight: ${fontWeight};
         font-style: ${fontStyle};
@@ -198,6 +207,8 @@ export default async function RootLayout({ children }) {
         /* Fix per Safari: assicura che il font venga caricato correttamente */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        /* Fix per Chrome/Firefox: assicura che i font vengano caricati correttamente */
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
     `
   }).filter(Boolean).join('\n')
@@ -221,9 +232,52 @@ export default async function RootLayout({ children }) {
 
   const gaId = settings?.seo?.googleAnalyticsId
 
+  // Genera link di preload per i font (solo woff2 per performance)
+  const fontPreloads = settings?.customFonts
+    ?.filter(font => {
+      // Usa fontFiles se disponibili, altrimenti fontFile per retrocompatibilità
+      return (font.fontFiles && font.fontFiles.length > 0) || font.fontFile?.asset?.url
+    })
+    .map(font => {
+      // Trova il file woff2 o il primo file disponibile
+      let firstFile = null
+      if (font.fontFiles && font.fontFiles.length > 0) {
+        const woff2File = font.fontFiles.find(file => 
+          file?.asset?.url?.toLowerCase().endsWith('.woff2')
+        )
+        firstFile = woff2File || font.fontFiles[0]
+      } else if (font.fontFile?.asset?.url) {
+        firstFile = font.fontFile
+      }
+      
+      if (!firstFile?.asset?.url) return null
+      
+      const url = firstFile.asset.url
+      // Assicura che l'URL sia assoluto
+      const absoluteUrl = url.startsWith('http') ? url : `https:${url}`
+      const ext = url.split('.').pop()?.toLowerCase() || ''
+      let type = 'font/woff2'
+      if (ext === 'woff') type = 'font/woff'
+      else if (ext === 'ttf') type = 'font/ttf'
+      else if (ext === 'otf') type = 'font/otf'
+      
+      return (
+        <link
+          key={`preload-${font.familyName}`}
+          rel="preload"
+          href={absoluteUrl}
+          as="font"
+          type={type}
+          crossOrigin="anonymous"
+        />
+      )
+    })
+    .filter(Boolean)
+
   return (
     <html lang="it">
       <head>
+        {fontPreloads}
         {customFontStyles && (
           <style dangerouslySetInnerHTML={{ __html: customFontStyles }} />
         )}
