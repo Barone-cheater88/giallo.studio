@@ -1347,7 +1347,11 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                         >
                           Contacts <span className={styles.menuArrow}>→</span>
                         </Link>
-                        <Link href="/archiviallo" className={styles.menuItem}>
+                        <Link 
+                          href="/archiviallo" 
+                          className={styles.menuItem}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
                           FUN HERE →
                         </Link>
                       </>
@@ -1374,7 +1378,11 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                         >
                           Contacts <span className={styles.menuArrow}>→</span>
                         </Link>
-                        <Link href="/archiviallo" className={styles.menuItem}>
+                        <Link 
+                          href="/archiviallo" 
+                          className={styles.menuItem}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
                           Fun Here →
                         </Link>
                       </>
