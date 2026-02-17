@@ -253,10 +253,14 @@ html.font-munchberg .link {
   text-transform: capitalize !important;
 }
 
-.link:hover,
+.link:hover {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
 .link:focus,
 .link:active {
-  opacity: 0.6;
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
