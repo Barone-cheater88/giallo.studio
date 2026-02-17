@@ -406,6 +406,8 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   overflow: hidden;
   width: 100%;
   position: relative;
+  /* Imposta font-size sul wrapper per mobile */
+  font-size: var(--font-body-size-mobile, 14px);
 }
 
 .mobileRowDescription {
@@ -423,7 +425,7 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   font-family: var(--font-body) !important;
   font-weight: var(--font-body-weight) !important;
   font-style: var(--font-body-style) !important;
-  /* Usa inherit per ereditare la dimensione dal body che ha già la dimensione corretta */
+  /* Usa inherit per ereditare la dimensione dal wrapper che ha già la dimensione corretta */
   font-size: inherit !important;
   line-height: var(--font-body-line-height) !important;
   text-transform: var(--font-body-transform, none) !important;
@@ -436,47 +438,36 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   text-size-adjust: 100% !important;
 }
 
-/* Forza dimensione font-body su mobile per iPhone - usa inherit per ereditare dal body */
+/* Forza dimensione font-body su mobile per iPhone - aumenta specificità con selettore mobile */
 @media (max-width: 890px) {
-  .mobileRowDescriptionText {
-    /* Eredita la dimensione dal body che ha già --font-body-size-mobile impostata */
-    font-size: inherit !important;
-    /* Fix specifico per iOS: forza il valore senza permettere auto-ridimensionamento */
-    -webkit-text-size-adjust: 100% !important;
-    text-size-adjust: 100% !important;
-  }
-  
-  /* Aumenta specificità per essere sicuri che venga applicato */
-  .mobileRowDescription .mobileRowDescriptionText {
+  /* Selettore molto specifico per mobile - include il contesto mobile */
+  .mobileHome .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper .mobileRowDescription .mobileRowDescriptionText,
+  .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper .mobileRowDescription .mobileRowDescriptionText {
     font-size: inherit !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
   }
   
-  /* Assicura che il wrapper eredit la dimensione corretta */
-  .mobileRowDescriptionWrapper {
-    font-size: var(--font-body-size-mobile, 14px);
+  /* Assicura che il wrapper abbia la dimensione corretta */
+  .mobileHome .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper,
+  .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper {
+    font-size: var(--font-body-size-mobile, 14px) !important;
   }
 }
 
 /* Fix specifico per iOS Safari - usa media query con supporto per iOS */
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 890px) {
-    .mobileRowDescriptionText {
+    .mobileHome .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper .mobileRowDescription .mobileRowDescriptionText,
+    .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper .mobileRowDescription .mobileRowDescriptionText {
       font-size: inherit !important;
       -webkit-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
     }
     
-    /* Aumenta specificità anche per iOS */
-    .mobileRowDescription .mobileRowDescriptionText {
-      font-size: inherit !important;
-      -webkit-text-size-adjust: 100% !important;
-      text-size-adjust: 100% !important;
-    }
-    
-    .mobileRowDescriptionWrapper {
-      font-size: var(--font-body-size-mobile, 14px);
+    .mobileHome .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper,
+    .mobileTable .mobileTableRow .mobileRowContent .mobileRowDescriptionWrapper {
+      font-size: var(--font-body-size-mobile, 14px) !important;
     }
   }
 }
