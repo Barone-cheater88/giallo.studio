@@ -1044,9 +1044,8 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
     <>
       {/* Menu fixed */}
       <header 
-        className={styles.header}
+        className={`${styles.header} ${showBorder ? styles.headerScrolled : ''}`}
         style={{
-          borderBottom: showBorder ? '1px solid currentColor' : 'none',
           transition: 'border-bottom 0.2s ease-out'
         }}
       >

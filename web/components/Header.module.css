@@ -16,6 +16,20 @@
   box-shadow: 0 0 0 1px var(--dynamic-background, var(--color-background, #ffffff));
 }
 
+/* Bordo inferiore a tutta larghezza quando si scrolla (desktop: header è 2300px ma la linea va edge-to-edge) */
+.headerScrolled::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 0;
+  border-bottom: 1px solid currentColor;
+  pointer-events: none;
+  transition: border-bottom 0.2s ease-out;
+}
+
 @media (max-width: 890px) {
   .header {
     max-width: none;
