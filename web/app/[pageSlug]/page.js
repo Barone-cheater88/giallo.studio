@@ -1,5 +1,5 @@
 import { sanityClient } from '@/sanity'
-import { pageBySlugQuery } from '@/lib/sanity.queries'
+import { pageBySlugQuery, projectBySlugQuery } from '@/lib/sanity.queries'
 import { redirect, notFound } from 'next/navigation'
 
 export default async function Page({ params }) {
@@ -14,7 +14,18 @@ export default async function Page({ params }) {
 
   const page = await sanityClient.fetch(pageBySlugQuery(pageSlug))
 
-  if (!page) notFound()
+  // Se non esiste una pagina con questo slug, prova a vedere se esiste un progetto
+  if (!page) {
+    const project = await sanityClient.fetch(projectBySlugQuery(pageSlug))
+
+    // Se esiste un progetto con questo slug, reindirizza alla nuova struttura /projects/:slug
+    if (project) {
+      redirect(`/projects/${pageSlug}`)
+    }
+
+    // Altrimenti 404 classico
+    notFound()
+  }
 
   return (
     <main style={{ padding: '2rem' }}>
