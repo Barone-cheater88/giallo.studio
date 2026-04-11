@@ -429,75 +429,28 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   animation: none;
 }
 
+/* Stessa tipografia del rigo Category / Client / Year (.mobileRowCategory ecc.) */
 .mobileRowDescriptionText {
   font-family: var(--font-body) !important;
   font-weight: var(--font-body-weight) !important;
   font-style: var(--font-body-style) !important;
+  font-size: var(--font-body-size-mobile, '18px') !important;
   line-height: var(--font-body-line-height) !important;
   text-transform: var(--font-body-transform, none) !important;
   color: inherit;
   display: inline-block;
   padding-right: 3em;
   flex-shrink: 0;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
 }
 
-/* Dimensione font specifica per ogni font su mobile - valori diretti in px */
 @media (max-width: 890px) {
-  /* Safari iOS: niente text autosizing sui marquee (stesse px che in desktop ristretto) */
+  /* Safari iOS: evita text autosizing sul marquee rispetto al body */
   .mobileRowDescriptionWrapper,
   .mobileRowDescription {
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
-  }
-
-  /* Default: Comic Sans - 14px */
-  .mobileRowDescriptionText {
-    font-size: 14px !important;
-    -webkit-text-size-adjust: none !important;
-    text-size-adjust: none !important;
-  }
-  
-  /* Times New Roman - 15px */
-  body.font-times-new-roman .mobileRowDescriptionText,
-  .font-times-new-roman .mobileRowDescriptionText,
-  html.font-times-new-roman .mobileRowDescriptionText {
-    font-size: 15px !important;
-  }
-  
-  /* Helvetica - 15px */
-  body.font-helvetica .mobileRowDescriptionText,
-  .font-helvetica .mobileRowDescriptionText,
-  html.font-helvetica .mobileRowDescriptionText {
-    font-size: 15px !important;
-  }
-  
-  /* IBM Plex Mono - 13px */
-  body.font-ibm-plex-mono .mobileRowDescriptionText,
-  .font-ibm-plex-mono .mobileRowDescriptionText,
-  html.font-ibm-plex-mono .mobileRowDescriptionText {
-    font-size: 13px !important;
-  }
-  
-  /* Comic Sans - 14px (default già impostato sopra) */
-  /* Munchberg - 18px */
-  body.font-munchberg .mobileRowDescriptionText,
-  .font-munchberg .mobileRowDescriptionText,
-  html.font-munchberg .mobileRowDescriptionText {
-    font-size: 18px !important;
-  }
-  
-  /* Droulers - 12px */
-  body.font-droulers .mobileRowDescriptionText,
-  .font-droulers .mobileRowDescriptionText,
-  html.font-droulers .mobileRowDescriptionText {
-    font-size: 12px !important;
-  }
-  
-  /* Dotty - 24px */
-  body.font-dotty .mobileRowDescriptionText,
-  .font-dotty .mobileRowDescriptionText,
-  html.font-dotty .mobileRowDescriptionText {
-    font-size: 24px !important;
   }
 }
 
