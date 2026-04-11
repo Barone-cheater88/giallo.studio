@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { GLYPH } from '@/lib/unicodeText'
 import styles from './projects.module.css'
 
 export default function MobileProjectsRow({ project }) {
@@ -35,7 +36,7 @@ export default function MobileProjectsRow({ project }) {
           <span className={styles.mobileRowName}>{title}</span>
           {slug && (
             <span className={styles.mobileRowArrow} aria-hidden="true">
-              →
+              {GLYPH.arrowRight}
             </span>
           )}
         </div>

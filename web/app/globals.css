@@ -11,7 +11,8 @@
 }
 
 html {
-  /* Rimuovi scroll bounce mantenendo lo scroll normale - solo su desktop */
+  /* Preferisci glifi di testo per caratteri “emoji-capable” (frecce, ecc.) */
+  font-variant-emoji: text;
 }
 
 @media (max-width: 890px) {
@@ -98,6 +99,7 @@ body {
   /* Prefer Site Settings palette if present (vars set on <body> in layout.js) */
   color: var(--color-text, var(--foreground));
   background: var(--color-background, var(--background));
+  font-variant-emoji: text;
   /* Typography from Site Settings (fallbacks keep it safe) */
   font-family: var(--font-body, Arial, Helvetica, sans-serif);
   font-weight: var(--font-body-weight, 400);

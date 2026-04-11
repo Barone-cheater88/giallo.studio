@@ -121,10 +121,10 @@
   padding-top: 20px;
 }
 
-/* Titolo fixed che appare durante lo scroll (solo mobile) */
+/* Titolo fixed che appare durante lo scroll (solo mobile) — top da JS = altezza header */
 .mobileHomeTitleFixed {
   position: fixed;
-  top: 45px;
+  top: var(--mobile-fixed-title-top, 48px);
   left: 0;
   right: 0;
   width: 100vw;
@@ -138,10 +138,7 @@
   font-size: var(--font-body-size-mobile, var(--font-body-size-desktop, '18px'));
   letter-spacing: 0.06em;
   background-color: var(--dynamic-background, var(--color-background, var(--background, #ffffff)));
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 4px 0;
   margin-left: 0;
   margin-right: 0;
   border-bottom: 1px solid currentColor;
@@ -174,7 +171,7 @@
 .mobileHomeTitleFixedText {
   display: inline-block;
   padding-right: 0;
-  padding-bottom: 1px;
+  padding-bottom: 0;
   margin-right: 5px;
   flex-shrink: 0;
   font-family: var(--font-body);
@@ -222,31 +219,6 @@
 .mobileHomeTitleFixed.visible {
   opacity: 1;
   pointer-events: auto;
-}
-
-/* Quando il font Dotty è attivo, modifica top e padding-bottom */
-body.font-dotty .mobileHomeTitleFixed.visible,
-.font-dotty .mobileHomeTitleFixed.visible,
-html.font-dotty .mobileHomeTitleFixed.visible {
-  top: 40px !important;
-  padding-bottom: 0px !important;
-}
-
-/* Quando il font IBM Plex Mono è attivo, modifica top */
-body.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
-.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
-html.font-ibm-plex-mono .mobileHomeTitleFixed.visible,
-body[style*="IBM Plex Mono"] .mobileHomeTitleFixed.visible,
-[style*="IBM Plex Mono"] .mobileHomeTitleFixed.visible {
-  top: 43px !important;
-}
-
-/* Quando il font Munchberg è attivo, modifica top e padding-top */
-body.font-munchberg .mobileHomeTitleFixed.visible,
-.font-munchberg .mobileHomeTitleFixed.visible,
-html.font-munchberg .mobileHomeTitleFixed.visible {
-  top: 49px !important;
-  padding-top: 10px !important;
 }
 
 @media (min-width: 891px) {

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import styles from './page.module.css'
 import { normalizeUrl } from '@/lib/utils'
+import { GLYPH } from '@/lib/unicodeText'
 
 export default function ClientsGrid({ clients }) {
   const [columnCount, setColumnCount] = useState(4)
@@ -52,7 +53,7 @@ export default function ClientsGrid({ clients }) {
                   >
                     <span>– </span>
                     <span className="selected-clients-link">{client.name}</span>
-                    <span> ↗</span>
+                    <span> {GLYPH.arrowNE}</span>
                   </a>
                 ) : (
                   <span>– {client.name}</span>

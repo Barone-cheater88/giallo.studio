@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PortableText } from '@portabletext/react'
+import { GLYPH } from '@/lib/unicodeText'
 import styles from './Header.module.css'
 
 export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) {
@@ -1160,7 +1161,9 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
         {/* Layout desktop: menu completo */}
         <div className={styles.desktopHeader}>
           <div className={styles.currentTime}>{currentTime}</div>
-          <Link href="/archiviallo" className={styles.funHere}>Fun Here →</Link>
+          <Link href="/archiviallo" className={styles.funHere}>
+            Fun Here {GLYPH.arrowRight}
+          </Link>
           <div className={styles.headerContent}>
             <nav className={styles.nav}>
               <Link 
@@ -1341,28 +1344,28 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Projects <span className={styles.menuArrow}>→</span>
+                          Projects <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/about" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          About <span className={styles.menuArrow}>→</span>
+                          About <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/contacts" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Contacts <span className={styles.menuArrow}>→</span>
+                          Contacts <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/archiviallo" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          FUN HERE →
+                          FUN HERE {GLYPH.arrowRight}
                         </Link>
                       </>
                     ) : (
@@ -1372,28 +1375,28 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Projects <span className={styles.menuArrow}>→</span>
+                          Projects <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/about" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          About <span className={styles.menuArrow}>→</span>
+                          About <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/contacts" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Contacts <span className={styles.menuArrow}>→</span>
+                          Contacts <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
                           href="/archiviallo" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Fun Here →
+                          Fun Here {GLYPH.arrowRight}
                         </Link>
                       </>
                     )}

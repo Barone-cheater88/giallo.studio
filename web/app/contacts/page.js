@@ -1,5 +1,6 @@
 import { sanityClient } from '../../sanity.js'
 import { siteSettingsQuery, pageBySlugQuery } from '../../lib/sanity.queries.js'
+import { GLYPH } from '@/lib/unicodeText'
 import styles from './page.module.css'
 import Footer from '@/components/Footer'
 import { PortableText } from '@portabletext/react'
@@ -129,7 +130,7 @@ export default async function Contacts() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              –– Instagram ↗
+              –– Instagram {GLYPH.arrowNE}
             </a>
           </div>
         )}
@@ -141,7 +142,7 @@ export default async function Contacts() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              –– Linkedin ↗
+              –– Linkedin {GLYPH.arrowNE}
             </a>
           </div>
         )}

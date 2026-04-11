@@ -88,6 +88,46 @@ export default function MobileTitleFixed({ children }) {
     }
   }, [isMounted, marqueeText])
 
+  // Allinea il titolo fisso al bordo inferiore dell'header (altezza reale, cambia con il font)
+  useEffect(() => {
+    if (!isMounted || typeof window === 'undefined') return
+
+    const header = document.querySelector('header')
+    if (!header) return
+
+    const syncTopToHeader = () => {
+      if (window.innerWidth > 890) {
+        document.documentElement.style.removeProperty('--mobile-fixed-title-top')
+        return
+      }
+      const h = header.getBoundingClientRect().height
+      document.documentElement.style.setProperty(
+        '--mobile-fixed-title-top',
+        `${Math.round(h * 1000) / 1000}px`
+      )
+    }
+
+    syncTopToHeader()
+    const ro = new ResizeObserver(syncTopToHeader)
+    ro.observe(header)
+    window.addEventListener('resize', syncTopToHeader)
+    window.addEventListener('orientationchange', syncTopToHeader)
+    if (document.fonts?.addEventListener) {
+      document.fonts.addEventListener('loadingdone', syncTopToHeader)
+    }
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(syncTopToHeader).catch(() => {})
+    }
+
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', syncTopToHeader)
+      window.removeEventListener('orientationchange', syncTopToHeader)
+      document.fonts?.removeEventListener?.('loadingdone', syncTopToHeader)
+      document.documentElement.style.removeProperty('--mobile-fixed-title-top')
+    }
+  }, [isMounted])
+
   // Gestisce la visibilità in base allo scroll
   useEffect(() => {
     if (!isMounted) return

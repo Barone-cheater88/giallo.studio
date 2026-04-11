@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { GLYPH } from '@/lib/unicodeText'
 import styles from './project.module.css'
 
 export default function ProjectNavigation({ prevProject, nextProject }) {
@@ -40,14 +41,18 @@ export default function ProjectNavigation({ prevProject, nextProject }) {
       <div className={styles.projectNavContent}>
         {prevProject && (
           <Link href={`/projects/${prevProject.slug.current}`} className={styles.navLink}>
-            <span className={styles.navTextDesktop}>← prev. project: {prevProject.title}</span>
-            <span className={styles.navTextMobile}>← previous</span>
+            <span className={styles.navTextDesktop}>
+              {GLYPH.arrowLeft} prev. project: {prevProject.title}
+            </span>
+            <span className={styles.navTextMobile}>{GLYPH.arrowLeft} previous</span>
           </Link>
         )}
         {nextProject && (
           <Link href={`/projects/${nextProject.slug.current}`} className={styles.navLink}>
-            <span className={styles.navTextDesktop}>next project: {nextProject.title} →</span>
-            <span className={styles.navTextMobile}>next →</span>
+            <span className={styles.navTextDesktop}>
+              next project: {nextProject.title} {GLYPH.arrowRight}
+            </span>
+            <span className={styles.navTextMobile}>next {GLYPH.arrowRight}</span>
           </Link>
         )}
       </div>
