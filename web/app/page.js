@@ -107,12 +107,8 @@ export default async function Home() {
 
           {/* Tabella mobile con layout dedicato */}
           <div className={styles.mobileTable}>
-            {projects.map((project, index) => (
-              <MobileProjectsRow 
-                key={project._id} 
-                project={project} 
-                index={index}
-              />
+            {projects.map((project) => (
+              <MobileProjectsRow key={project._id} project={project} />
             ))}
           </div>
         </div>

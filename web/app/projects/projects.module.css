@@ -60,12 +60,14 @@
   .mobileTable,
   .mobileTableRow,
   .mobileRowContent,
-  .mobileRowTitle,
+  .mobileRowHeadingLine,
+  .mobileRowActivityLine,
+  .mobileRowMetaLine,
   .mobileRowOrder,
   .mobileRowName,
-  .mobileRowCategory,
-  .mobileRowClientYear,
-  .mobileRowDescription {
+  .mobileRowArrow,
+  .mobileRowActivity,
+  .mobileRowClientYear {
     display: none !important;
   }
 }
@@ -306,11 +308,16 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   width: 100%;
 }
 
-/* [Numero ordinamento] Nome - stesso rigo */
-.mobileRowTitle {
+/* Mobile home riga 1: [N°] e titolo di seguito sulla stessa linea */
+.mobileRowHeadingLine {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: baseline;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 0.35em;
+  width: 100%;
+  min-width: 0;
   padding-top: 0;
   padding-bottom: 0;
   font-family: var(--font-subtitle);
@@ -320,6 +327,46 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   line-height: var(--font-subtitle-line-height);
   text-transform: var(--font-subtitle-transform, none);
   color: inherit;
+}
+
+.mobileRowHeadingLine .mobileRowName {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.mobileRowHeadingLine .mobileRowArrow {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Riga 2: Activity (body) */
+.mobileRowActivityLine {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, none);
+  color: inherit;
+  width: 100%;
+}
+
+.mobileRowActivity {
+  display: inline;
+}
+
+/* Riga 3: Client – Year */
+.mobileRowMetaLine {
+  font-family: var(--font-body);
+  font-weight: var(--font-body-weight);
+  font-style: var(--font-body-style);
+  font-size: var(--font-body-size-mobile, '18px');
+  line-height: var(--font-body-line-height);
+  text-transform: var(--font-body-transform, none);
+  color: inherit;
+  width: 100%;
 }
 
 .mobileRowOrder {
@@ -351,45 +398,9 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   line-height: var(--font-subtitle-line-height);
   text-transform: var(--font-subtitle-transform, none);
   color: inherit;
-  margin-left: auto;
 }
 
-/* Category – Client – Year - stesso rigo */
-.mobileRowCategoryClientYear {
-  font-family: var(--font-body);
-  font-weight: var(--font-body-weight);
-  font-style: var(--font-body-style);
-  font-size: var(--font-body-size-mobile, '18px');
-  line-height: var(--font-body-line-height);
-  text-transform: var(--font-body-transform, none);
-  color: inherit;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0;
-}
-
-.mobileRowCategory {
-  font-family: var(--font-body);
-  font-weight: var(--font-body-weight);
-  font-style: var(--font-body-style);
-  font-size: var(--font-body-size-mobile, '18px');
-  line-height: var(--font-body-line-height);
-  text-transform: var(--font-body-transform, none);
-  color: inherit;
-}
-
-.mobileRowSeparator {
-  font-family: var(--font-body);
-  font-weight: var(--font-body-weight);
-  font-style: var(--font-body-style);
-  font-size: var(--font-body-size-mobile, '18px');
-  line-height: var(--font-body-line-height);
-  color: inherit;
-  margin: 0 4px;
-}
-
-/* Client - Anno - stesso rigo */
+/* Client – Year (riga mobile) */
 .mobileRowClientYear {
   font-family: var(--font-body);
   font-weight: var(--font-body-weight);
@@ -398,72 +409,6 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   line-height: var(--font-body-line-height);
   text-transform: var(--font-body-transform, none);
   color: inherit;
-}
-
-.mobileRowBullet {
-  font-family: var(--font-body);
-  font-weight: var(--font-body-weight);
-  font-style: var(--font-body-style);
-  font-size: var(--font-body-size-mobile, '18px');
-  line-height: var(--font-body-line-height);
-  color: inherit;
-  flex-shrink: 0;
-}
-
-/* Description - rigo separato con effetto marquee */
-.mobileRowDescriptionWrapper {
-  margin-top: 4px;
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.mobileRowDescription {
-  display: inline-flex;
-  white-space: nowrap;
-  will-change: transform;
-  animation: mobileMarquee var(--animation-duration, 15s) linear infinite;
-}
-
-.mobileRowDescription[style*="none"] {
-  animation: none;
-}
-
-/* Stessa tipografia del rigo Category / Client / Year (.mobileRowCategory ecc.) */
-.mobileRowDescriptionText {
-  font-family: var(--font-body) !important;
-  font-weight: var(--font-body-weight) !important;
-  font-style: var(--font-body-style) !important;
-  font-size: var(--font-body-size-mobile, '18px') !important;
-  line-height: var(--font-body-line-height) !important;
-  text-transform: var(--font-body-transform, none) !important;
-  color: inherit;
-  display: inline-block;
-  padding-right: 3em;
-  flex-shrink: 0;
-  -webkit-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
-}
-
-@media (max-width: 890px) {
-  /* Marquee: nowrap + overflow → WebKit text autosizing; will-change+transform può alterare il rendering su iOS */
-  .mobileRowDescriptionWrapper,
-  .mobileRowDescription {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
-  .mobileRowDescription {
-    will-change: auto;
-  }
-}
-
-@keyframes mobileMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 /* ============================================
