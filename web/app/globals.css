@@ -21,6 +21,13 @@ html {
     min-height: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    /*
+     * WebKit (Safari iPhone) applica il “text autosizing” in modo diverso da Chrome desktop
+     * ristretto: righe nowrap molto lunghe (marquee) vengono spesso ingrandite rispetto al
+     * resto. 100% allinea il comportamento al rendering “desktop”.
+     */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 }
 
@@ -43,6 +50,8 @@ body {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overflow-y: auto;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 }
 
