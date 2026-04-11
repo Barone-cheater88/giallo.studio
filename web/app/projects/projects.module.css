@@ -185,6 +185,16 @@
   white-space: nowrap;
 }
 
+@media (max-width: 890px) {
+  .mobileHomeTitleFixed,
+  .mobileHomeTitleFixedMarquee,
+  .mobileHomeTitleFixedMarqueeInner,
+  .mobileHomeTitleFixedText {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+}
+
 @-webkit-keyframes mobileTitleMarquee {
   0% {
     -webkit-transform: translateX(0);
@@ -406,8 +416,6 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   overflow: hidden;
   width: 100%;
   position: relative;
-  /* Imposta font-size sul wrapper per mobile */
-  font-size: var(--font-body-size-mobile, 14px);
 }
 
 .mobileRowDescription {
@@ -431,16 +439,22 @@ html.font-munchberg .mobileHomeTitleFixed.visible {
   display: inline-block;
   padding-right: 3em;
   flex-shrink: 0;
-  /* Fix per iOS Safari: previene l'auto-ridimensionamento del testo */
-  -webkit-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
 }
 
 /* Dimensione font specifica per ogni font su mobile - valori diretti in px */
 @media (max-width: 890px) {
+  /* Safari iOS: niente text autosizing sui marquee (stesse px che in desktop ristretto) */
+  .mobileRowDescriptionWrapper,
+  .mobileRowDescription {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
   /* Default: Comic Sans - 14px */
   .mobileRowDescriptionText {
     font-size: 14px !important;
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
   }
   
   /* Times New Roman - 15px */
