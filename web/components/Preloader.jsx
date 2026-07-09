@@ -20,7 +20,7 @@ export default function Preloader({ logoSvg, logo }) {
 
     const logoSvgUrl = logoSvg?.asset?.url
     if (logoSvgUrl && typeof logoSvgUrl === 'string' && (logoSvgUrl.startsWith('http') || logoSvgUrl.startsWith('https'))) {
-      fetch(logoSvgUrl, { cache: 'no-store' })
+      fetch(logoSvgUrl)
         .then(res => res.ok ? res.text() : null)
         .then(svgText => {
           if (svgText) {
@@ -56,7 +56,7 @@ export default function Preloader({ logoSvg, logo }) {
       // Piccolo delay per assicurarsi che tutto sia renderizzato
       setTimeout(() => {
         setIsLoading(false)
-      }, 800)
+      }, 300)
     }
 
     if (document.readyState === 'complete') {

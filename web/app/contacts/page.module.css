@@ -1,5 +1,6 @@
 .contactsContent {
   margin-top: 4rem;
+  margin-bottom: 50vh;
 }
 
 @media (max-width: 890px) {

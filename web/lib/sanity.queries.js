@@ -5,7 +5,7 @@
  * Restituisce il primo (e unico) documento siteSettings
  */
 export const siteSettingsQuery = `
-  *[_type == "siteSettings"][0]{
+  *[_id == "siteSettings"][0]{
     siteTitle,
     siteClaim,
     menuSubtitle[]{
@@ -140,7 +140,13 @@ export const pagesQuery = `
       alt,
       hotspot
     },
-    description,
+    description[]{
+      ...,
+      markDefs[]{
+        ...
+      }
+    },
+    "descriptionText": pt::text(description),
     isPublished
   }
 `
@@ -178,7 +184,13 @@ export const pageBySlugQuery = (slug) => `
       alt,
       hotspot
     },
-    description,
+    description[]{
+      ...,
+      markDefs[]{
+        ...
+      }
+    },
+    "descriptionText": pt::text(description),
     isPublished
   }
 `
@@ -259,9 +271,9 @@ export const projectsQuery = `
               url,
               metadata
             },
-            alt,
             hotspot
           },
+          alt,
           caption
         },
         // Video
@@ -380,9 +392,9 @@ export const projectBySlugQuery = (slug) => `
               url,
               metadata
             },
-            alt,
             hotspot
           },
+          alt,
           caption
         },
         // Video
@@ -467,7 +479,31 @@ export const homeProjectsQuery = `
  * Singleton: contenuto + SEO della pagina /projects
  */
 export const projectsIndexQuery = `
-  *[_type == "projectsIndex"][0]{
+  *[_id == "projectsIndex"][0]{
+    _id,
+    title,
+    description,
+    seo{
+      metaTitle,
+      metaDescription,
+      keywords,
+      canonicalUrl,
+      ogImage{
+        asset->{
+          _id,
+          url,
+          metadata
+        }
+      }
+    }
+  }
+`
+
+/**
+ * Singleton: contenuto + SEO della pagina /giallo-archive
+ */
+export const archivialloQuery = `
+  *[_type == "archiviallo" && isPublished == true][0]{
     _id,
     title,
     description,

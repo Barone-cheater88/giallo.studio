@@ -2,6 +2,7 @@ import { sanityClient } from '../../sanity.js'
 import { siteSettingsQuery, pageBySlugQuery } from '../../lib/sanity.queries.js'
 import styles from './page.module.css'
 import ClientsGrid from './ClientsGrid'
+import PageDescription from '@/components/PageDescription'
 
 export async function generateMetadata() {
   const [settings, aboutPage] = await Promise.all([
@@ -18,23 +19,31 @@ export async function generateMetadata() {
 
   const description =
     aboutPage?.seo?.metaDescription ||
-    aboutPage?.description ||
+    aboutPage?.descriptionText ||
     settings?.seo?.metaDescription ||
     settings?.siteClaim ||
     undefined
 
   const ogImageUrl = aboutPage?.seo?.ogImage?.asset?.url || settings?.seo?.ogImage?.asset?.url
   const canonical = aboutPage?.seo?.canonicalUrl || (settings?.siteUrl ? `${settings.siteUrl.replace(/\/$/, '')}/about` : undefined)
+  const keywords = aboutPage?.seo?.keywords?.length ? aboutPage.seo.keywords : settings?.seo?.keywords
 
   return {
     title,
     description,
+    keywords,
     alternates: canonical ? { canonical } : undefined,
     openGraph: {
       title,
       description,
       url: canonical,
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : []
     }
   }
 }
@@ -55,25 +64,7 @@ export default async function About() {
         <div
           className={styles.aboutContent}
         >
-          {aboutPage.description.split('\n').map((paragraph, index) => (
-            <p
-              key={index}
-              style={{
-                fontFamily: 'var(--font-subtitle)',
-                fontWeight: 'var(--font-subtitle-weight)',
-                fontStyle: 'var(--font-subtitle-style)',
-                textTransform: 'var(--font-subtitle-transform)',
-                lineHeight: 'var(--font-subtitle-line-height)',
-                fontSize: 'clamp(var(--font-subtitle-size-mobile, 16px), 4vw, var(--font-subtitle-size-desktop, 20px))',
-                color: 'inherit',
-                margin: 0,
-                marginBottom: index < aboutPage.description.split('\n').length - 1 ? '1em' : 0,
-                textIndent: '80px'
-              }}
-            >
-              {paragraph}
-            </p>
-          ))}
+          <PageDescription value={aboutPage.description} />
         </div>
       )}
 

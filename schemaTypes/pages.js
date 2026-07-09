@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import { defineType, defineField, defineArrayMember } from 'sanity'
 
 export const pages = defineType({
   name: 'pages',
@@ -39,9 +39,40 @@ export const pages = defineType({
     defineField({
       name: 'description',
       title: 'Descrizione',
-      type: 'text',
-      rows: 4,
-      description: 'Breve descrizione della pagina (opzionale)'
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  defineField({
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL',
+                    validation: Rule => Rule.required()
+                  }),
+                  defineField({
+                    name: 'openInNewTab',
+                    type: 'boolean',
+                    title: 'Apri in nuova scheda',
+                    initialValue: false
+                  })
+                ]
+              }
+            ]
+          }
+        })
+      ],
+      description: 'Breve descrizione della pagina (supporta link e formattazione)'
     }),
 
     // Home custom text fields

@@ -23,8 +23,19 @@
   margin: 0;
 }
 
+.description {
+  font-size: var(--font-body-size-desktop);
+  line-height: var(--font-body-line-height);
+  white-space: pre-line;
+  margin: 1.5rem 0 0;
+}
+
 @media (max-width: 890px) {
   .title {
     font-size: var(--font-heading-size-mobile, var(--font-heading-size-desktop));
+  }
+
+  .description {
+    font-size: var(--font-body-size-mobile, var(--font-body-size-desktop));
   }
 }

@@ -18,24 +18,18 @@ export default function PageTransition({ children }) {
     }
 
     if (previousPathname.current !== pathname) {
-      console.log('Pathname changed:', previousPathname.current, '->', pathname)
-      
       // Ottieni il colore di sfondo - TEMPORANEAMENTE usa rosso per test
       if (typeof window !== 'undefined') {
-        const color = getComputedStyle(document.body).backgroundColor || '#ff0000' // Rosso per test
         setBgColor('#ff0000') // Forza rosso per vedere se appare
-        console.log('Background color:', color, 'Using red for test')
       }
 
       // Fade out
       setIsTransitioning(true)
-      console.log('Transition started')
       
       // Fade in dopo delay più lungo per vedere l'animazione
       setTimeout(() => {
         setIsTransitioning(false)
         previousPathname.current = pathname
-        console.log('Transition ended')
       }, 600) // 600ms per vedere meglio l'animazione
     }
   }, [pathname])

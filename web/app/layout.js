@@ -84,6 +84,11 @@ export async function generateMetadata() {
         'max-snippet': -1,
       },
     },
+    verification: {
+      other: {
+        'facebook-domain-verification': '4rk4o2arxd73nnm8vgytab892hvpr2',
+      },
+    },
   }
 }
 
@@ -99,7 +104,7 @@ export default async function RootLayout({ children }) {
       const timeoutId = setTimeout(() => controller.abort(), 5000) // Timeout di 5 secondi
       
       const svgResponse = await fetch(logoSvgUrl, {
-        cache: 'no-store',
+        next: { revalidate: 3600, tags: ['sanity'] },
         signal: controller.signal
       }).catch((fetchError) => {
         // Se il fetch fallisce, ritorna null invece di lanciare errore
@@ -121,7 +126,7 @@ export default async function RootLayout({ children }) {
           .replace(/stroke='(?!none)[^']*'/g, "stroke='currentColor'")
           .replace(
             /<svg([^>]*)>/,
-            '<svg$1 style="max-width: 80px; max-height: 80px; width: auto; height: auto; color: inherit; fill: currentColor;">'
+            '<svg$1 style="width: 80px; height: auto; max-height: 80px; color: inherit; fill: currentColor;">'
           )
       }
     } catch (error) {

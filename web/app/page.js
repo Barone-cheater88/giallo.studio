@@ -28,16 +28,24 @@ export async function generateMetadata() {
 
   const ogImageUrl = index?.seo?.ogImage?.asset?.url || settings?.seo?.ogImage?.asset?.url
   const canonical = index?.seo?.canonicalUrl || (settings?.siteUrl ? `${settings.siteUrl.replace(/\/$/, '')}/` : undefined)
+  const keywords = index?.seo?.keywords?.length ? index.seo.keywords : settings?.seo?.keywords
 
   return {
     title,
     description,
+    keywords,
     alternates: canonical ? { canonical } : undefined,
     openGraph: {
       title,
       description,
       url: canonical,
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : []
     }
   }
 }

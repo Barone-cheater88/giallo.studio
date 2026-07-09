@@ -95,16 +95,6 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
     }
   }, [isMenuOpen])
 
-  // Debug: verifica che il logo sia passato
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Header logo prop:', logo)
-      console.log('Header logo URL:', logo?.asset?.url)
-      console.log('Header logoSvg prop:', logoSvg)
-      console.log('Header logoSvgContent:', logoSvgContent ? 'present' : 'missing')
-    }
-  }, [logo, logoSvg, logoSvgContent])
-
   // Aggiorna l'ora corrente ogni secondo
   useEffect(() => {
     const updateTime = () => {
@@ -1034,13 +1024,6 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
   const logoSvgUrl = logoSvg?.asset?.url
   const logoUrl = logo?.asset?.url
 
-  // Debug temporaneo
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Header render - logoSvgContent:', logoSvgContent ? 'present' : 'missing')
-    console.log('Header render - logoSvgUrl:', logoSvgUrl)
-    console.log('Header render - logoUrl:', logoUrl)
-  }
-
   return (
     <>
       {/* Menu fixed */}
@@ -1054,7 +1037,7 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
         <div className={styles.mobileHeader}>
           {/* Prima colonna: Logo */}
           <div className={styles.mobileLogoColumn}>
-            <Link href="/" className={styles.logoLink}>
+            <Link href="/" className={styles.logoLink} aria-label="Home">
               {logoSvgContent ? (
                 <div 
                   className={`${styles.logoContainer} headerLogoContainer`}
@@ -1161,8 +1144,8 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
         {/* Layout desktop: menu completo */}
         <div className={styles.desktopHeader}>
           <div className={styles.currentTime}>{currentTime}</div>
-          <Link href="/archiviallo" className={styles.funHere}>
-            Fun Here {GLYPH.arrowRight}
+          <Link href="/giallo-archive" className={styles.funHere}>
+            giallo.archive {GLYPH.arrowRight}
           </Link>
           <div className={styles.headerContent}>
             <nav className={styles.nav}>
@@ -1275,7 +1258,7 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
             <div className={styles.mobileHeader}>
               {/* Prima colonna: Logo */}
               <div className={styles.mobileLogoColumn}>
-                <Link href="/" className={styles.logoLink} onClick={() => setIsMenuOpen(false)}>
+                <Link href="/" className={styles.logoLink} aria-label="Home" onClick={() => setIsMenuOpen(false)}>
                   {logoSvgContent ? (
                     <div 
                       className={`${styles.logoContainer} headerLogoContainer`}
@@ -1361,11 +1344,11 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                           Contacts <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
-                          href="/archiviallo" 
+                          href="/giallo-archive" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          FUN HERE {GLYPH.arrowRight}
+                          giallo.archive {GLYPH.arrowRight}
                         </Link>
                       </>
                     ) : (
@@ -1392,11 +1375,11 @@ export default function Header({ menuSubtitle, logo, logoSvg, logoSvgContent }) 
                           Contacts <span className={styles.menuArrow}>{GLYPH.arrowRight}</span>
                         </Link>
                         <Link 
-                          href="/archiviallo" 
+                          href="/giallo-archive" 
                           className={styles.menuItem}
                           onClick={() => setIsMenuOpen(false)}
                         >
-                          Fun Here {GLYPH.arrowRight}
+                          giallo.archive {GLYPH.arrowRight}
                         </Link>
                       </>
                     )}

@@ -20,8 +20,6 @@ export const sanityClient = {
       // Aggiungiamo la query come parametro
       url.searchParams.set('query', finalQuery)
 
-      console.log('Sanity Query URL:', url.toString())
-
       const response = await fetch(url.toString(), {
         headers: {
           'Accept': 'application/json'
@@ -40,7 +38,6 @@ export const sanityClient = {
       }
 
       const data = await response.json()
-      console.log('Sanity Response:', data)
       return data.result
     } catch (error) {
       console.error('Sanity fetch error:', error)

@@ -31,14 +31,14 @@ export async function generateMetadata({ params }) {
 
   const title = project?.seo?.metaTitle || project?.title || 'Project'
   const description = project?.seo?.metaDescription || project?.description || settings?.seo?.metaDescription
-  const keywords = project?.seo?.keywords
+  const keywords = project?.seo?.keywords?.length ? project.seo.keywords : settings?.seo?.keywords
   const ogImageUrl = project?.seo?.ogImage?.asset?.url || project?.coverImage?.asset?.url || settings?.seo?.ogImage?.asset?.url
   const canonical = project?.seo?.canonicalUrl || (settings?.siteUrl ? `${settings.siteUrl.replace(/\/$/, '')}/projects/${slug}` : undefined)
 
   return {
     title,
     description,
-    keywords: keywords,
+    keywords,
     alternates: canonical ? { canonical } : undefined,
     openGraph: {
       title,
