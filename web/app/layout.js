@@ -8,6 +8,7 @@ import FloatingLogo from "@/components/FloatingLogo";
 import PageTransitionWrapper from "@/components/PageTransitionWrapper";
 import Preloader from "@/components/Preloader";
 import Analytics from "@/components/Analytics";
+import AnimatedFavicon from "@/components/AnimatedFavicon";
 import StructuredData from "@/components/StructuredData";
 
 const geistSans = Geist({
@@ -50,7 +51,7 @@ export async function generateMetadata() {
     metadataBase: new URL(siteUrl),
     ...(faviconUrl && {
       icons: {
-        icon: faviconUrl,
+        icon: [{ url: faviconUrl, type: 'image/gif' }],
         shortcut: faviconUrl,
         apple: faviconUrl,
       },
@@ -371,6 +372,7 @@ export default async function RootLayout({ children }) {
         }}
       >
         <Analytics gaId={gaId} />
+        <AnimatedFavicon url={settings?.favicon?.asset?.url} />
         <Preloader
           logoSvg={settings?.logoSvg}
           logo={settings?.logo}

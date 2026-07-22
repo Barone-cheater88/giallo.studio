@@ -11,6 +11,7 @@
   "dependencies": {
     "@portabletext/react": "^6.0.2",
     "@sanity/client": "^6.15.0",
+    "gifuct-js": "^2.1.2",
     "next": "16.0.10",
     "react": "19.2.1",
     "react-dom": "19.2.1"
