@@ -33,6 +33,7 @@ export async function generateMetadata() {
   const siteDescription = settings?.seo?.metaDescription || settings?.siteClaim || 'Independent creative studio based in Milan.'
   const siteUrl = settings?.siteUrl || 'https://giallo.studio'
   const ogImage = settings?.seo?.ogImage?.asset?.url
+  const faviconUrl = settings?.favicon?.asset?.url
   const keywords = settings?.seo?.keywords
   const facebookAppId = settings?.seo?.facebookAppId
 
@@ -47,6 +48,13 @@ export async function generateMetadata() {
     creator: 'giallo.studio',
     publisher: 'giallo.studio',
     metadataBase: new URL(siteUrl),
+    ...(faviconUrl && {
+      icons: {
+        icon: faviconUrl,
+        shortcut: faviconUrl,
+        apple: faviconUrl,
+      },
+    }),
     alternates: {
       canonical: siteUrl,
     },
