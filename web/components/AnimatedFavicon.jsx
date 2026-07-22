@@ -75,7 +75,6 @@ export default function AnimatedFavicon({ url }) {
 
       const iconLink = getAnimatedIconLink()
       removeStaticIconLinks(iconLink)
-
       let frameIndex = 0
       let frameImageData = null
 
@@ -110,7 +109,19 @@ export default function AnimatedFavicon({ url }) {
           FAVICON_SIZE,
           FAVICON_SIZE
         )
-        iconLink.href = outputCanvas.toDataURL('image/png')
+
+        const dataUrl = outputCanvas.toDataURL('image/png')
+        const existingLink = document.querySelector("link[rel='icon'][data-animated-favicon='true']")
+        if (existingLink) {
+          existingLink.remove()
+        }
+
+        const nextLink = document.createElement('link')
+        nextLink.rel = 'icon'
+        nextLink.type = 'image/png'
+        nextLink.setAttribute('data-animated-favicon', 'true')
+        nextLink.href = dataUrl
+        document.head.appendChild(nextLink)
       }
 
       const renderFrame = () => {
