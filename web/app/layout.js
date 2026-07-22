@@ -51,8 +51,8 @@ export async function generateMetadata() {
     metadataBase: new URL(siteUrl),
     ...(faviconUrl && {
       icons: {
-        icon: [{ url: faviconUrl, type: 'image/gif' }],
-        shortcut: faviconUrl,
+        icon: [{ url: '/api/favicon', type: 'image/gif' }],
+        shortcut: '/api/favicon',
         apple: faviconUrl,
       },
     }),

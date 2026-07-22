@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 
 const FAVICON_SIZE = 64
+const FAVICON_PROXY_URL = '/api/favicon'
 
 function isGifUrl(url) {
   return /\.gif($|\?)/i.test(url)
@@ -30,6 +31,14 @@ function getAnimatedIconLink() {
   return link
 }
 
+function removeStaticIconLinks(animatedLink) {
+  document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach((link) => {
+    if (link !== animatedLink) {
+      link.remove()
+    }
+  })
+}
+
 export default function AnimatedFavicon({ url }) {
   useEffect(() => {
     if (!url || !isGifUrl(url) || supportsNativeAnimatedFavicon() || prefersReducedMotion()) {
@@ -41,7 +50,7 @@ export default function AnimatedFavicon({ url }) {
 
     async function startAnimation() {
       const { parseGIF, decompressFrames } = await import('gifuct-js')
-      const response = await fetch(url)
+      const response = await fetch(FAVICON_PROXY_URL)
 
       if (!response.ok || cancelled) return
 
@@ -65,6 +74,8 @@ export default function AnimatedFavicon({ url }) {
       const outputCtx = outputCanvas.getContext('2d')
 
       const iconLink = getAnimatedIconLink()
+      removeStaticIconLinks(iconLink)
+
       let frameIndex = 0
       let frameImageData = null
 
@@ -126,7 +137,11 @@ export default function AnimatedFavicon({ url }) {
       renderFrame()
     }
 
-    startAnimation().catch(() => {})
+    startAnimation().catch((error) => {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Animated favicon failed:', error)
+      }
+    })
 
     return () => {
       cancelled = true
