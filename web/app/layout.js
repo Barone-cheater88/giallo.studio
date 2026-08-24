@@ -8,7 +8,6 @@ import FloatingLogo from "@/components/FloatingLogo";
 import PageTransitionWrapper from "@/components/PageTransitionWrapper";
 import Preloader from "@/components/Preloader";
 import Analytics from "@/components/Analytics";
-import AnimatedFavicon from "@/components/AnimatedFavicon";
 import StructuredData from "@/components/StructuredData";
 
 const geistSans = Geist({
@@ -372,7 +371,6 @@ export default async function RootLayout({ children }) {
         }}
       >
         <Analytics gaId={gaId} />
-        <AnimatedFavicon url={settings?.favicon?.asset?.url} />
         <Preloader
           logoSvg={settings?.logoSvg}
           logo={settings?.logo}
