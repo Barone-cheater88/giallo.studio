@@ -1,17 +1,27 @@
 [build]
   # Base directory: Netlify cambierà directory qui prima di eseguire i comandi
   base = "web"
-  # Comando di build: installa dipendenze e builda Next.js
+  # Comando di build: installa dipendenze e builda Next.js in HTML statico
   command = "npm install && npm run build"
-  # Publish directory: gestito automaticamente dal plugin Next.js
-  publish = ".next"
+  # Cartella generata da `output: 'export'`. Nessun plugin Next: zero funzioni serverless.
+  publish = "out"
 
-# Plugin ufficiale Netlify per Next.js
-# Gestisce automaticamente routing, ISR, API routes, ecc.
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+[build.environment]
+  # Impedisce a Netlify di riattaccare il runtime Next.js, che rimetterebbe le funzioni.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
-# Variabili d'ambiente (opzionale - meglio configurarle nel pannello Netlify)
-# [build.environment]
-#   NODE_VERSION = "18"
-#   NEXT_PUBLIC_SANITY_PROJECT_ID = "a5gx9icj"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-DNS-Prefetch-Control = "on"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

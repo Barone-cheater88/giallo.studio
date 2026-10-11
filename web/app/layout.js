@@ -26,6 +26,23 @@ export const viewport = {
   viewportFit: "cover",
 }
 
+function absoluteAssetUrl(url) {
+  if (!url || typeof url !== 'string') return url
+  if (url.startsWith('//')) return `https:${url}`
+  if (url.startsWith('http') || url.startsWith('/')) return url
+  return `https://${url}`
+}
+
+function faviconMime(url) {
+  const clean = url.split('?')[0].toLowerCase()
+  if (clean.endsWith('.gif')) return 'image/gif'
+  if (clean.endsWith('.svg')) return 'image/svg+xml'
+  if (clean.endsWith('.jpg') || clean.endsWith('.jpeg')) return 'image/jpeg'
+  if (clean.endsWith('.webp')) return 'image/webp'
+  if (clean.endsWith('.ico')) return 'image/x-icon'
+  return 'image/png'
+}
+
 export async function generateMetadata() {
   const settings = await sanityClient.fetch(siteSettingsQuery)
   
@@ -50,8 +67,8 @@ export async function generateMetadata() {
     metadataBase: new URL(siteUrl),
     ...(faviconUrl && {
       icons: {
-        icon: [{ url: '/api/favicon', type: 'image/gif' }],
-        shortcut: '/api/favicon',
+        icon: [{ url: faviconUrl, type: faviconMime(faviconUrl) }],
+        shortcut: faviconUrl,
         apple: faviconUrl,
       },
     }),
@@ -112,7 +129,7 @@ export default async function RootLayout({ children }) {
       const timeoutId = setTimeout(() => controller.abort(), 5000) // Timeout di 5 secondi
       
       const svgResponse = await fetch(logoSvgUrl, {
-        next: { revalidate: 3600, tags: ['sanity'] },
+        cache: process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache',
         signal: controller.signal
       }).catch((fetchError) => {
         // Se il fetch fallisce, ritorna null invece di lanciare errore
@@ -175,28 +192,7 @@ export default async function RootLayout({ children }) {
     
     // Genera src declarations per ogni formato
     sortedFiles.forEach(({ url, ext }) => {
-      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
-      let proxyUrl = url
-      
-      // Se l'URL è di Sanity CDN, usa il proxy per evitare problemi CORS
-      if (url.includes('cdn.sanity.io')) {
-        // Estrai il path dopo cdn.sanity.io/
-        const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url)
-        const path = urlObj.pathname.substring(1) // Rimuovi lo slash iniziale
-        // Usa il proxy - assicurati che il path sia corretto
-        proxyUrl = `/api/fonts/${path}`
-      } else if (url.startsWith('//')) {
-        // Se inizia con //, potrebbe essere Sanity
-        if (url.includes('cdn.sanity.io')) {
-          const urlObj = new URL(`https:${url}`)
-          const path = urlObj.pathname.substring(1)
-          proxyUrl = `/api/fonts/${path}`
-        } else {
-          proxyUrl = `https:${url}`
-        }
-      } else if (!url.startsWith('http') && !url.startsWith('/')) {
-        proxyUrl = `https://${url}`
-      }
+      const proxyUrl = absoluteAssetUrl(url)
       
       let format = 'woff2'
       if (ext === 'woff') format = 'woff'
@@ -217,25 +213,7 @@ export default async function RootLayout({ children }) {
     // Fallback per retrocompatibilità: usa fontFile se fontFiles è vuoto
     if (srcDeclarations.length === 0 && font.fontFile?.asset?.url) {
       const fontUrl = font.fontFile.asset.url
-      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
-      let proxyUrl = fontUrl
-      
-      // Se l'URL è di Sanity CDN, usa il proxy
-      if (fontUrl.includes('cdn.sanity.io')) {
-        const urlObj = new URL(fontUrl.startsWith('//') ? `https:${fontUrl}` : fontUrl)
-        const path = urlObj.pathname.substring(1)
-        proxyUrl = `/api/fonts/${path}`
-      } else if (fontUrl.startsWith('//')) {
-        if (fontUrl.includes('cdn.sanity.io')) {
-          const urlObj = new URL(`https:${fontUrl}`)
-          const path = urlObj.pathname.substring(1)
-          proxyUrl = `/api/fonts/${path}`
-        } else {
-          proxyUrl = `https:${fontUrl}`
-        }
-      } else if (!fontUrl.startsWith('http') && !fontUrl.startsWith('/')) {
-        proxyUrl = `https://${fontUrl}`
-      }
+      const proxyUrl = absoluteAssetUrl(fontUrl)
       
       const fileExtension = fontUrl.split('.').pop()?.toLowerCase()
       let format = 'woff2'
@@ -260,12 +238,6 @@ export default async function RootLayout({ children }) {
         font-weight: ${fontWeight};
         font-style: ${fontStyle};
         font-display: swap;
-        /* Fix per Safari: assicura che il font venga caricato correttamente */
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        /* Fix per Chrome/Firefox: assicura che i font vengano caricati correttamente */
-        font-feature-settings: normal;
-        font-variant: normal;
       }
     `
   }).filter(Boolean).join('\n')
@@ -310,25 +282,7 @@ export default async function RootLayout({ children }) {
       if (!firstFile?.asset?.url) return null
       
       const url = firstFile.asset.url
-      // Converti l'URL di Sanity in URL del proxy per evitare problemi CORS
-      let proxyUrl = url
-      
-      // Se l'URL è di Sanity CDN, usa il proxy
-      if (url.includes('cdn.sanity.io')) {
-        const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url)
-        const path = urlObj.pathname.substring(1)
-        proxyUrl = `/api/fonts/${path}`
-      } else if (url.startsWith('//')) {
-        if (url.includes('cdn.sanity.io')) {
-          const urlObj = new URL(`https:${url}`)
-          const path = urlObj.pathname.substring(1)
-          proxyUrl = `/api/fonts/${path}`
-        } else {
-          proxyUrl = `https:${url}`
-        }
-      } else if (!url.startsWith('http') && !url.startsWith('/')) {
-        proxyUrl = `https://${url}`
-      }
+      const proxyUrl = absoluteAssetUrl(url)
       
       // Per il preload, usa l'URL relativo del proxy (funziona anche in <head>)
       const preloadUrl = proxyUrl

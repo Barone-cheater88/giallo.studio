@@ -1,6 +1,8 @@
 import { sanityClient } from '@/sanity'
 import { siteSettingsQuery, pagesQuery, projectsQuery } from '@/lib/sanity.queries'
 
+export const dynamic = 'force-static'
+
 export default async function sitemap() {
   const baseUrl = 'https://giallo.studio'
   
@@ -40,11 +42,19 @@ export default async function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${cleanSiteUrl}/giallo-archive`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
   ]
 
+  const staticSlugs = new Set(['home', 'about', 'contacts', 'projects', 'giallo-archive', 'archiviallo'])
+
   // Add pages
-  const pageRoutes = pages
-    .filter(page => page?.slug?.current)
+  const pageRoutes = (pages || [])
+    .filter(page => page?.slug?.current && !staticSlugs.has(page.slug.current))
     .map(page => ({
       url: `${cleanSiteUrl}/${page.slug.current}`,
       lastModified: new Date(),
@@ -53,7 +63,7 @@ export default async function sitemap() {
     }))
 
   // Add projects
-  const projectRoutes = projects
+  const projectRoutes = (projects || [])
     .filter(project => project?.slug?.current)
     .map(project => ({
       url: `${cleanSiteUrl}/projects/${project.slug.current}`,

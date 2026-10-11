@@ -1,7 +1,5 @@
-import Link from 'next/link'
 import { sanityClient } from '@/sanity'
 import { siteSettingsQuery } from '@/lib/sanity.queries'
-import Image from 'next/image'
 import NotFoundContent from './NotFoundContent'
 
 export default async function NotFound() {

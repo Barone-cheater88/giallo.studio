@@ -1,5 +1,4 @@
-// sanity.js - Client Sanity temporaneo (usando fetch nativo)
-// TODO: Sostituire con @sanity/client quando la dipendenza sarà installata
+// Lettura Sanity via fetch nativo, solo in build. Nessun client da eseguire a ogni visita.
 
 const SANITY_PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'a5gx9icj'
 const SANITY_DATASET = 'production'
@@ -24,11 +23,9 @@ export const sanityClient = {
         headers: {
           'Accept': 'application/json'
         },
-        // Dev: sempre fresco. Prod: cache + revalidate via webhook (tag "sanity").
+        // Dev: sempre fresco. In produzione i dati si leggono solo durante la build:
+        // le pagine pubblicate sono HTML statico e non richiamano Sanity a ogni visita.
         cache: process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache',
-        next: process.env.NODE_ENV === 'development'
-          ? { revalidate: 0 }
-          : { revalidate: 60, tags: ['sanity'] }
       })
 
       if (!response.ok) {

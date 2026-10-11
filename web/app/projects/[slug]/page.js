@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { sanityClient } from '@/sanity'
 import { projectBySlugQuery, projectsQuery, siteSettingsQuery } from '@/lib/sanity.queries'
 import { notFound } from 'next/navigation'
@@ -10,7 +9,9 @@ import { normalizeUrl } from '@/lib/utils'
 
 export async function generateStaticParams() {
   const projects = await sanityClient.fetch(projectsQuery)
-  if (!projects) return []
+  if (!projects) {
+    throw new Error('Impossibile leggere i progetti da Sanity durante la build')
+  }
   return projects
     .map((project) => project?.slug?.current)
     .filter(Boolean)

@@ -1,8 +1,20 @@
 import { sanityClient } from '@/sanity'
-import { pageBySlugQuery, projectBySlugQuery, siteSettingsQuery } from '@/lib/sanity.queries'
-import { redirect, notFound } from 'next/navigation'
+import { pageBySlugQuery, pagesQuery, siteSettingsQuery } from '@/lib/sanity.queries'
+import { notFound } from 'next/navigation'
 import PageDescription from '@/components/PageDescription'
 import styles from './page.module.css'
+
+export async function generateStaticParams() {
+  const pages = await sanityClient.fetch(pagesQuery)
+  if (!pages) {
+    throw new Error('Impossibile leggere le pagine da Sanity durante la build')
+  }
+  const reserved = new Set(['home', 'about', 'contacts', 'projects', 'giallo-archive', 'archiviallo'])
+  return pages
+    .map((page) => page?.slug?.current)
+    .filter((slug) => slug && !reserved.has(slug))
+    .map((pageSlug) => ({ pageSlug }))
+}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await Promise.resolve(params)
@@ -58,23 +70,9 @@ export default async function Page({ params }) {
   const resolvedParams = await Promise.resolve(params)
   const { pageSlug } = resolvedParams || {}
 
-  // Se qualcuno visita /pages/home, rimandalo alla home pulita /
-  if (pageSlug === 'home') {
-    redirect('/')
-  }
-
   const page = await sanityClient.fetch(pageBySlugQuery(pageSlug))
 
-  // Se non esiste una pagina con questo slug, prova a vedere se esiste un progetto
   if (!page) {
-    const project = await sanityClient.fetch(projectBySlugQuery(pageSlug))
-
-    // Se esiste un progetto con questo slug, reindirizza alla nuova struttura /projects/:slug
-    if (project) {
-      redirect(`/projects/${pageSlug}`)
-    }
-
-    // Altrimenti 404 classico
     notFound()
   }
 
